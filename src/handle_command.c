@@ -50,10 +50,11 @@ static void set_process(data_t data) {
     }
 }
 
-static const command_t command[3] = {
+static const command_t command[4] = {
     {"-h", &print_usage, 0},
     {"-s", &exec_detail, 0},
-    {"-p", &set_process, 1}
+    {"-p", &set_process, 1},
+    {NULL, NULL, 0}
 };
 
 int handle_command(int ac, char **av) {
@@ -71,6 +72,11 @@ int handle_command(int ac, char **av) {
         command[i].func(data);
         return 0;
     }
-    print_usage((data_t) { 0, NULL });
+    if (ac >= 2) {
+        auto data = (data_t) { 0, av[1] };
+        exec_detail(data);
+        return 0;
+    } else
+        print_usage((data_t) { 0, NULL });
     return 1;
 }
