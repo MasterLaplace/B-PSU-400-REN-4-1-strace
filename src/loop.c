@@ -6,6 +6,13 @@
 */
 
 #include "syscall.h"
+static void print_simple(regs_t regs, rusage_t rusage, int *status, int child);
+static void print_detail(regs_t regs, rusage_t rusage, int *status, int child);
+
+static const void (*func[])(regs_t, rusage_t, int *, int) = {
+    &print_simple,
+    &print_detail
+};
 
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
 {
@@ -14,8 +21,7 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
             continue;
         printf("%s(", table[i].name);
         for (int j = 0; j < table[i].nargs; j++) {
-            if (j != 0)
-                printf(", ");
+            printf("%s", (j != 0) ? ", " : "");
             printf("%#llx", regs.rdi + j * 8);
         }
         break;
@@ -34,8 +40,7 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
             continue;
         printf("%s(", table[i].name);
         for (int j = 0; j < table[i].nargs; j++) {
-            if (j != 0)
-                printf(", ");
+            printf("%s", (j != 0) ? ", " : "");
             printf("%#llx", regs.rdi + j * 8);
         }
         break;
@@ -46,11 +51,6 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
     ptrace(PTRACE_GETREGS, child, NULL, &regs);
     printf(")\t= %#llx\n", regs.rax);
 }
-
-static const void (*func[])(regs_t, rusage_t, int*, int) = {
-    &print_simple,
-    &print_detail
-};
 
 void loop(bool detail, pid_t pid, int *status)
 {
@@ -63,10 +63,8 @@ void loop(bool detail, pid_t pid, int *status)
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
         long rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
 
-        if ((rip & 0xffff) == 0x050f) {
+        if ((rip & 0xffff) == 0x050f)
             func[detail](regs, rusage, status, pid);
-        }
-
         if (WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;
