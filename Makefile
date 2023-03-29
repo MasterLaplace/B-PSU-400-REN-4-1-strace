@@ -5,17 +5,16 @@
 ## Makefile
 ##
 
-RM 			= 	rm -f
 NO_PRINT 	= 	--no-print-directory
-OPTI		=	-O3 -march=native
+OPTI		=	-Ofast -march=native
 CC 			= 	gcc
 NAME 		=	strace
-INCLUDE 	=	./includes
-CFLAGS		=	-I $(INCLUDE)
+CFLAGS		=	$(OPTI) -I ./includes
 SRC_DIR 	= 	src/
 
 SRC			=   $(SRC_DIR)handle_command.c	\
 				$(SRC_DIR)loop.c			\
+				$(SRC_DIR)casting.c			\
 
 MAIN		=	$(SRC_DIR)core.c
 
@@ -23,7 +22,7 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 
 $(NAME): $(OBJ)
-	@$(CC) $(OPTI) $(CFLAGS) -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 all: $(NAME)
 

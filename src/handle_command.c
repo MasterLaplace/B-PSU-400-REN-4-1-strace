@@ -13,6 +13,7 @@
 static void print_usage(data_t data);
 static void exec_detail(data_t data);
 static void set_process(data_t data);
+
 static const command_t command[4] = {
     {"-h", &print_usage, 0},
     {"-s", &exec_detail, 0},
@@ -28,22 +29,20 @@ static int is_num(char *str)
     return atoi(str);
 }
 
-static void print_usage(data_t data)
+static inline void print_usage(data_t data)
 {
     printf("Usage: strace [-h] [-s] [-p pid program] program [args ...]\n");
 }
 
 static void exec_detail(data_t data)
 {
-    printf("Printing Process Details on %s\n", data.program);
     pid_t child;
+    int status;
 
     if (!(child = fork())) {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
         execve(data.program, NULL, NULL);
     } else {
-        int status;
-
         wait4(child, &status, 0, NULL);
         loop(true, child, &status);
     }
@@ -51,12 +50,10 @@ static void exec_detail(data_t data)
 
 static void set_process(data_t data)
 {
-    printf("Process %d attached on %s\n", data.pid, data.program);
+    int status;
+
     if (data.pid != 0) {
-        int status;
-
         wait4(data.pid, &status, 0, NULL);
-
         loop(false, data.pid, &status);
     }
 }

@@ -6,12 +6,25 @@
 */
 
 #include "syscall.h"
+
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child);
 static void print_detail(regs_t regs, rusage_t rusage, int *status, int child);
 
 static const void (*func[])(regs_t, rusage_t, int *, int) = {
     &print_simple,
     &print_detail
+};
+
+static const void (*data_type[])(regs_t, int, int) = {
+    NULL,
+    &print_number,
+    &print_string,
+    &print_pointer,
+    &print_pointer,
+    &print_pointer,
+    &print_pointer,
+    &print_pointer,
+    &print_struct
 };
 
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
@@ -22,7 +35,7 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
         printf("%s(", table[i].name);
         for (int j = 0; j < table[i].nargs; j++) {
             printf("%s", (j != 0) ? ", " : "");
-            printf("%#llx", regs.rdi + j * 8);
+            printf("%#llx", get_register(regs, j));
         }
         break;
     }
@@ -35,21 +48,28 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
 
 static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
 {
+    setbuf(stdout, NULL);
     for (int i = 0; table[i].num != -1; i++) {
         if (regs.rax != table[i].num)
             continue;
-        printf("%s(", table[i].name);
-        for (int j = 0; j < table[i].nargs; j++) {
+        printf("%s(", table[i].name, table[i].nargs);
+        for (int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
             printf("%s", (j != 0) ? ", " : "");
-            printf("%#llx", regs.rdi + j * 8);
+            if (table[i].arg[j] < 9 && table[i].arg[j] > 0)
+                data_type[table[i].arg[j]](regs, child, j);
+            else
+                print_pointer(regs, child, j);
         }
+        ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
+        wait4(child, status, 0, &rusage);
+
+        ptrace(PTRACE_GETREGS, child, NULL, &regs);
+        printf(")\t= ");
+        if (table[i].rettype < 9 && table[i].rettype > 0)
+            data_type[table[i].rettype](regs, child, 7);
+        printf("\n");
         break;
     }
-    ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
-    wait4(child, status, 0, &rusage);
-
-    ptrace(PTRACE_GETREGS, child, NULL, &regs);
-    printf(")\t= %#llx\n", regs.rax);
 }
 
 void loop(bool detail, pid_t pid, int *status)
