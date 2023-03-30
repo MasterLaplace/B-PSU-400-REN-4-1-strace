@@ -119,6 +119,7 @@
     #define false 0
     #define NULL ((void*)0)
     #define auto __auto_type
+    #define TYPE table[i].rettype
     #include <stdlib.h>
     #include <sys/wait.h>
     #include <unistd.h>

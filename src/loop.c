@@ -62,11 +62,9 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
         }
         ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         wait4(child, status, 0, &rusage);
-
         ptrace(PTRACE_GETREGS, child, NULL, &regs);
         printf(")\t= ");
-        if (table[i].rettype < 9 && table[i].rettype > 0)
-            data_type[table[i].rettype](regs, child, 7);
+        data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
         printf("\n");
         break;
     }
