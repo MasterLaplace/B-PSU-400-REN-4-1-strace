@@ -142,6 +142,7 @@ typedef struct {
     int pid;
     char *program;
     char **av;
+    bool is_not_detailed;
 } data_t;
 
 typedef struct {
