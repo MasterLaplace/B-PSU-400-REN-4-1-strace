@@ -7,7 +7,7 @@
 
 #include "syscall.h"
 
-typeof(8UL) get_register(regs_t regs, int j)
+typeof(8ULL) get_register(regs_t regs, int j)
 {
     switch (j) {
         case 0:
@@ -67,47 +67,21 @@ void print_pointer(regs_t regs, int child, int j)
 void print_struct(regs_t registers, int child, int register_index)
 {
     auto struct_pointer = get_register(registers, register_index);
-    int c = 0;
+    struct stat s = {0};
     int inc = 0;
-    struct stat stat;
 
     do {
-        c = ptrace(PTRACE_PEEKDATA, child, struct_pointer + inc, NULL);
-
+        int c = ptrace(PTRACE_PEEKDATA, child, struct_pointer + inc, NULL);
         if (c == -1)
             break;
-
-        ((char *)&stat)[inc] = (char)c;
-
-        if (inc == 0)
-            printf("{st_mode=");
-        if (inc == 2)
-            printf(", st_size=");
-        if (inc == 8)
-            printf(", st_blocks=");
-        if (inc == 16)
-            printf(", st_atime=");
-        if (inc == 24)
-            printf(", st_mtime=");
-        if (inc == 32)
-            printf(", st_ctime=");
-        if (inc == 40)
-            printf("}");
-
-        if (inc == 0)
-            printf("%#x ", c);
-        if (inc == 2)
-            printf("%d ", c);
-        if (inc == 8)
-            printf("%d ", c);
-        if (inc == 16)
-            printf("%d ", c);
-        if (inc == 24)
-            printf("%d ", c);
-        if (inc == 32)
-            printf("%d ", c);
-
+        ((byte *)&s)[inc] = (char)c;
+        if (inc == offsetof(struct stat, st_mode) + sizeof(__mode_t)) {
+            printf("{st_mode=%#o", s.st_mode);
+        }
+        if (inc == offsetof(struct stat, st_size) + sizeof(long)) {
+            printf(", st_size=%ld, ...}", s.st_size);
+            break;
+        }
         inc++;
-
-    } while (inc < sizeof(struct stat) && c != -1);
+    } while (inc < sizeof(struct stat));
 }
