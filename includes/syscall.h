@@ -120,6 +120,7 @@
     #define NULL ((void*)0)
     #define auto __auto_type
     #define TYPE table[i].rettype
+    #define ARG table[i].arg[j]
     #include <stdlib.h>
     #include <sys/wait.h>
     #include <unistd.h>
@@ -527,6 +528,7 @@ static syscall_t table[330] = {{0, "read", 3, NUM, NUM, VOID_P, NUM, 0, 0, 0},
 int handle_command(int ac, char **av);
 void loop(bool detail, pid_t pid, int *status);
 typeof(8ULL) get_register(regs_t regs, int j);
+char *get_mode_type(dev_t mode);
 void print_number(regs_t regs, int child, int j);
 void print_string(regs_t registers, int child, int register_index);
 void print_pointer(regs_t regs, int child, int j);

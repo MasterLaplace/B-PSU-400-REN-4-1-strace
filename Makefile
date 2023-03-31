@@ -15,6 +15,7 @@ SRC_DIR 	= 	src/
 SRC			=   $(SRC_DIR)handle_command.c	\
 				$(SRC_DIR)loop.c			\
 				$(SRC_DIR)casting.c			\
+				$(SRC_DIR)utils.c			\
 
 MAIN		=	$(SRC_DIR)core.c
 

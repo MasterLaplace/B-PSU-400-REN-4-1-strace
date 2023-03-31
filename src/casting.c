@@ -7,30 +7,6 @@
 
 #include "syscall.h"
 
-typeof(8ULL) get_register(regs_t regs, int j)
-{
-    switch (j) {
-        case 0:
-            return regs.rdi;
-        case 1:
-            return regs.rsi;
-        case 2:
-            return regs.rdx;
-        case 3:
-            return regs.rcx;
-        case 4:
-            return regs.r8;
-        case 5:
-            return regs.r9;
-        case 6:
-            return regs.r10;
-        case 7:
-            return regs.rax;
-        default:
-            return 0;
-    }
-}
-
 void print_number(regs_t regs, int child, int j)
 {
     printf("%lld", get_register(regs, j));
@@ -66,22 +42,18 @@ void print_pointer(regs_t regs, int child, int j)
 
 void print_struct(regs_t registers, int child, int register_index)
 {
-    auto struct_pointer = get_register(registers, register_index);
-    struct stat s = {0};
-    int inc = 0;
+    auto st_ptr = get_register(registers, register_index);
+    size_t offset = 0;
 
-    do {
-        int c = ptrace(PTRACE_PEEKDATA, child, struct_pointer + inc, NULL);
-        if (c == -1)
-            break;
-        ((byte *)&s)[inc] = (char)c;
-        if (inc == offsetof(struct stat, st_mode) + sizeof(__mode_t)) {
-            printf("{st_mode=%#o", s.st_mode);
-        }
-        if (inc == offsetof(struct stat, st_size) + sizeof(long)) {
-            printf(", st_size=%ld, ...}", s.st_size);
-            break;
-        }
-        inc++;
-    } while (inc < sizeof(struct stat));
+    offset = offsetof(struct stat, st_mode);
+    auto c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);
+    if (c == -1)
+        return;
+    printf("{st_mode=%s|%#o", get_mode_type(c), c & 07777);
+
+    offset = offsetof(struct stat, st_size);
+    c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);
+    if (c == -1)
+        return;
+    printf(", st_size=%ld, ...}", c);
 }

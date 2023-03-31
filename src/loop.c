@@ -55,10 +55,7 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
         printf("%s(", table[i].name, table[i].nargs);
         for (int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
             printf("%s", (j != 0) ? ", " : "");
-            if (table[i].arg[j] < 9 && table[i].arg[j] > 0)
-                data_type[table[i].arg[j]](regs, child, j);
-            else
-                print_pointer(regs, child, j);
+            data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
         }
         ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         wait4(child, status, 0, &rusage);
