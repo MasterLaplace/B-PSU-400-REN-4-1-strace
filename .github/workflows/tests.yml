@@ -1,0 +1,36 @@
+name: Testing tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build with Makefile
+      run: make re
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install criterion and gcovr
+      run: |
+        sudo /script/install_criterion.sh
+
+    - uses: actions/checkout@v3
+    - name: Compile and launch tests
+      run: make tests_run
+
+    - name: Check if build succeeded
+      run: exit $(($? != 0))

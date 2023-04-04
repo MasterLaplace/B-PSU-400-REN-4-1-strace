@@ -115,9 +115,6 @@
     #define STRUCT__CACHE_P (126)
     #define STRUCT_SCHED_ATTR_P (127)
     #define UNION__ATTR_P   (128)
-    #define true 1
-    #define false 0
-    #define NULL ((void*)0)
     #define auto __auto_type
     #define TYPE table[i].rettype
     #define ARG table[i].arg[j]
@@ -135,10 +132,10 @@
     #include <syscall.h>
     #include <ctype.h>
     #include <stddef.h>
+    #include <stdbool.h>
 
 typedef unsigned int sizint;
 typedef unsigned char byte;
-typedef _Bool bool;
 typedef struct user_regs_struct regs_t;
 typedef struct rusage rusage_t;
 
