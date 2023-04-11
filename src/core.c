@@ -5,7 +5,7 @@
 ** core
 */
 
-#include "syscall.h"
+#include "strace.h"
 
 int main(int ac, char **av)
 {

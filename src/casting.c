@@ -5,13 +5,27 @@
 ** casting
 */
 
-#include "syscall.h"
+#include "strace.h"
 
+/**
+ * @brief Print a number.
+ *
+ * @param regs  The registers of the child.
+ * @param child  The child process.
+ * @param j  The index of the register containing the number.
+ */
 void print_number(regs_t regs, int child, int j)
 {
     printf("%lld", get_register(regs, j));
 }
 
+/**
+ * @brief Print a string from a pointer.
+ *
+ * @param registers  The registers of the child.
+ * @param child    The child process.
+ * @param register_index  The index of the register containing the pointer.
+ */
 void print_string(regs_t registers, int child, int register_index)
 {
     auto string_pointer = get_register(registers, register_index);
@@ -35,11 +49,25 @@ void print_string(regs_t registers, int child, int register_index)
     printf("\"");
 }
 
+/**
+ * @brief Print a pointer.
+ *
+ * @param regs  The registers of the child.
+ * @param child  The child process.
+ * @param j  The index of the register containing the pointer.
+ */
 void print_pointer(regs_t regs, int child, int j)
 {
     printf("%#llx", get_register(regs, j));
 }
 
+/**
+ * @brief Print a struct stat.
+ *
+ * @param registers  The registers of the child.
+ * @param child  The child process.
+ * @param register_index  The index of the register containing the pointer.
+ */
 void print_struct(regs_t registers, int child, int register_index)
 {
     auto st_ptr = get_register(registers, register_index);

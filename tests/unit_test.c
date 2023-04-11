@@ -7,7 +7,7 @@
 
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include "syscall.h"
+#include "strace.h"
 
 static void redirect_all_std(void)
 {

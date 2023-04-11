@@ -5,9 +5,15 @@
 ** utils
 */
 
-#include "syscall.h"
-#include <sys/stat.h>
+#include "strace.h"
 
+/**
+ * @brief Get the register object
+ *
+ * @param regs The registers
+ * @param j The index of the register
+ * @return typeof(8ULL) The value of the register
+ */
 typeof(8ULL) get_register(regs_t regs, int j) {
     switch (j) {
         case 0:

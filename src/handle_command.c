@@ -5,7 +5,7 @@
 ** handle_command
 */
 
-#include "syscall.h"
+#include "strace.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +20,12 @@ static const command_t command[4] = {
     {NULL, NULL, 0}
 };
 
+/**
+ * @brief Check if the string is a number.
+ *
+ * @param str  The string to check.
+ * @return int  The number if it is a number, 0 otherwise.
+ */
 static int is_num(char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
@@ -28,11 +34,21 @@ static int is_num(char *str)
     return atoi(str);
 }
 
+/**
+ * @brief Print the usage of the program.
+ *
+ * @param data  The data containing the program name.
+ */
 static void print_usage(data_t data)
 {
     printf("Usage: strace [-h] [-s] [-p pid program] program [args ...]\n");
 }
 
+/**
+ * @brief Execute the program and print the details.
+ *
+ * @param data  The data containing the program name.
+ */
 static void exec_detail(data_t data)
 {
     printf("Printing Process Details on %s\n", data.program);
@@ -49,18 +65,30 @@ static void exec_detail(data_t data)
     }
 }
 
+/**
+ * @brief Set the process object and wait for it to finish.
+ *
+ * @param data  The data containing the pid and the program name.
+ */
 static void set_process(data_t data)
 {
-    printf("Process %d attached on %s\n", data.pid, data.program);
     if (data.pid != 0) {
         int status;
 
+        ptrace(PTRACE_ATTACH, data.pid, NULL, NULL);
         wait4(data.pid, &status, 0, NULL);
 
         loop(false, data.pid, &status);
     }
 }
 
+/**
+ * @brief Handle the command line arguments.
+ *
+ * @param ac  The number of arguments.
+ * @param av  The arguments.
+ * @return int  0 if the command was executed, 1 otherwise.
+ */
 int handle_command(int ac, char **av)
 {
     for (int i = 0; ac >= 2 && command[i].key != NULL; ++i) {
