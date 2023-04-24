@@ -531,4 +531,23 @@ void print_string(regs_t registers, int child, int register_index);
 void print_pointer(regs_t regs, int child, int j);
 void print_struct(regs_t registers, int child, int register_index);
 
+/**
+ * @brief call structure
+ *
+ * @param prefix prefix of the call (0x0f)
+ * @param opcode opcode of the call (0x05)
+ * @param modrm modrm of the call (0x00)
+ * @param sib sib of the call (0x00)
+ * @param disp disp of the call (0x00)
+ * @param imm imm of the call (0x00)
+ */
+typedef struct __attribute__((packed)) call_s {
+    unsigned prefix: 8;
+    unsigned opcode: 24;
+    unsigned modrm: 8;
+    unsigned sib: 8;
+    unsigned disp: 32;
+    unsigned imm: 32;
+} call_t;
+
 #endif  /* !SYSCALL_H_ */
