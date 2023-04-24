@@ -24,6 +24,8 @@ ASM = nasm
 SRC_TEST = tests/main.S
 OBJ_TEST = $(SRC_TEST:.S=.o)
 
+all: $(NAME)
+
 .S.o:
 	@$(ASM) -felf64 $< -o $@
 
@@ -37,8 +39,6 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
-
-all: $(NAME)
 
 clean:
 	@$(RM) $(OBJ)
