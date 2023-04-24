@@ -98,29 +98,6 @@ void loop(bool detail, pid_t pid, int *status)
 
         if ((rip & 0xffff) == 0x050f)
             func[detail](regs, rusage, status, pid);
-        // call_t call = *(call_t*) &rip;
-        // if (call.opcode == 0xE8) {
-        //     int rel_offset = (int) call.rel32;
-        //     printf("call: %d\n", rel_offset);
-        //     // do something with the relative offset
-        // }
-
-        if ((rip & 0xffff) == 0xe8) {
-            char command[100];
-        //     call_t call = *(call_t *) &rip;
-        //     printf("call: %d\n", call.opcode);
-            sprintf(command, "cat /proc/%d/maps", pid);
-            system(command);
-            // sprintf(command, "cat /proc/%d/exe", pid);
-            // system(command);
-        //     // int BUFFER_SIZE = 4096;
-        //     // char str[BUFFER_SIZE];
-        //     // FILE *fp = popen(command, "r");
-        //     // fread(str, 1, BUFFER_SIZE, fp);
-        //     // printf("%s", str);
-        //     // pclose(fp);
-        //     // print_e8(regs, rusage, status, pid);
-        }
         if (WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;

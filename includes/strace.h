@@ -550,4 +550,10 @@ typedef struct __attribute__((packed)) call_s {
     unsigned imm: 32;
 } call_t;
 
+// typedef struct __attribute__((packed)) call_s {
+//     unsigned opcode: 8;
+//     unsigned rel32: 32;
+// } call_t;
+
+
 #endif  /* !SYSCALL_H_ */

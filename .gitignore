@@ -66,3 +66,4 @@ perso
 vgcore.*
 *.data
 .Test
+ftrace
