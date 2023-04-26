@@ -10,12 +10,9 @@ OPTI		=	-Ofast -march=native
 CC 			= 	gcc
 NAME 		=	ftrace
 CFLAGS		=	$(OPTI) -I ./includes
-SRC_DIR 	= 	src/
 
-SRC			=   $(SRC_DIR)handle_command.c	\
-				$(SRC_DIR)loop.c			\
-				$(SRC_DIR)casting.c			\
-				$(SRC_DIR)utils.c			\
+SRC	=	$(wildcard src/*.c) \
+		$(wildcard src/*/*.c)
 
 TEST 		= 	tests/unit_test.c
 
@@ -41,9 +38,7 @@ lib:
 	@make all -C ./libs $(NO_PRINT)
 	@echo -e $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
 
-MAIN		=	$(SRC_DIR)core.c
-
-OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
+OBJ			=	$(SRC:.c=.o)
 
 
 $(NAME): $(OBJ)

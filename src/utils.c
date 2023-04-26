@@ -5,7 +5,7 @@
 ** utils
 */
 
-#include "strace.h"
+#include "ftrace.h"
 
 /**
  * @brief Get the register object

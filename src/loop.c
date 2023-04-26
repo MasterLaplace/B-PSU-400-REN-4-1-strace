@@ -5,7 +5,7 @@
 ** loop
 */
 
-#include "strace.h"
+#include "ftrace.h"
 
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child);
 static void print_detail(regs_t regs, rusage_t rusage, int *status, int child);
@@ -40,11 +40,11 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
     for (int i = 0; table[i].num != -1; i++) {
         if (regs.rax != table[i].num)
             continue;
-    printf("%s(", table[i].name);
-    for (int j = 0; j < table[i].nargs; j++) {
-        printf("%s", (j != 0) ? ", " : "");
-        printf("%#llx", get_register(regs, j));
-    }
+        printf("%s(", table[i].name);
+        for (int j = 0; j < table[i].nargs; j++) {
+            printf("%s", (j != 0) ? ", " : "");
+            printf("%#llx", get_register(regs, j));
+        }
         break;
     }
     ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
@@ -68,17 +68,17 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
     for (int i = 0; table[i].num != -1; i++) {
         if (regs.rax != table[i].num)
             continue;
-    printf("%s(", table[i].name, table[i].nargs);
-    for (int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
-        printf("%s", (j != 0) ? ", " : "");
-        data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
-    }
-    ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
-    wait4(child, status, 0, &rusage);
-    ptrace(PTRACE_GETREGS, child, NULL, &regs);
-    printf(")\t= ");
-    data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
-    printf("\n");
+        printf("%s(", table[i].name, table[i].nargs);
+        for (int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
+            printf("%s", (j != 0) ? ", " : "");
+            data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
+        }
+        ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
+        wait4(child, status, 0, &rusage);
+        ptrace(PTRACE_GETREGS, child, NULL, &regs);
+        printf(")\t= ");
+        data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
+        printf("\n");
         break;
     }
 }

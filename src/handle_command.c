@@ -5,7 +5,7 @@
 ** handle_command
 */
 
-#include "strace.h"
+#include "ftrace.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
