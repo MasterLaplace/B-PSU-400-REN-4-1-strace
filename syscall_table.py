@@ -35,10 +35,10 @@ Start_of_file = """/*
 
 typedef struct {
     int num;
-    char *name;
-    int nargs;
-    int rettype;
-    int arg[6];
+    const char *name;
+    unsigned int nargs;
+    unsigned int rettype;
+    unsigned int arg[6];
 } syscall_t;
 
 static syscall_t table[] = {
