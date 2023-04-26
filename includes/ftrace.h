@@ -601,6 +601,18 @@ typedef struct __attribute__((packed)) call_s {
     unsigned imm: 32;
 } call_t;
 
+typedef struct maps_s {
+    char *line;
+    char *start;
+    char *end;
+    char *perms;
+    char *offset;
+    char *dev;
+    char *inode;
+    char *pathname;
+    size_t len;
+} maps_t;
+
 // typedef struct __attribute__((packed)) call_s {
 //     unsigned opcode: 8;
 //     unsigned rel32: 32;
