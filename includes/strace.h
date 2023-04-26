@@ -115,6 +115,17 @@
     #define STRUCT__CACHE_P (126)
     #define STRUCT_SCHED_ATTR_P (127)
     #define UNION__ATTR_P   (128)
+    #define STRUCT_STATX_P  (129)
+    #define STRUCT_RSEQ_P   (130)
+    #define STRUCT_SIGINFO_P    (131)
+    #define STRUCT_IO_URING_PARAMS_P    (132)
+    #define STRUCT_IO_URING_SQE_P   (133)
+    #define STRUCT_CLONE_ARGS_P (134)
+    #define STRUCT_OPEN_HOW_P  (135)
+    #define STRUCT_MOUNT_ATTR_P   (136)
+    #define STRUCT_CADDR   (137)
+    #define STRUCT_LANDLOCK_RULESET_ATTR_P (138)
+    #define STRUCT_LANDLOCK_RULE_P (139)
     #define auto __auto_type
     #define TYPE table[i].rettype
     #define ARG table[i].arg[j]
@@ -160,7 +171,8 @@ typedef struct {
     int arg[6];
 } syscall_t;
 
-static syscall_t table[330] = {{0, "read", 3, NUM, NUM, VOID_P, NUM, 0, 0, 0},
+static syscall_t table[360] = {
+    {0, "read", 3, NUM, NUM, VOID_P, NUM, 0, 0, 0},
     {1, "write", 3, NUM, NUM, STRING, NUM, 0, 0, 0},
     {2, "open", 2, NUM, STRING, NUM, 0, 0, 0, 0},
     {3, "close", 1, NUM, NUM, 0, 0, 0, 0, 0},
@@ -451,7 +463,8 @@ static syscall_t table[330] = {{0, "read", 3, NUM, NUM, VOID_P, NUM, 0, 0, 0},
     {269, "faccessat", 4, NUM, NUM, STRING, NUM, NUM, 0, 0},
     {270, "pselect6", 6, 0, 0, 0, 0, 0, 0, 0},
     {271, "ppoll", 4, NUM, STRUCT_POLLFD_P, UNSIGNED, CONST_STRUCT_TIMESPEC_P,
-        CONST_SIGSET_T_P, 0, 0}, {272, "unshare", 1, NUM, NUM, 0, 0, 0, 0, 0},
+        CONST_SIGSET_T_P, 0, 0},
+    {272, "unshare", 1, NUM, NUM, 0, 0, 0, 0, 0},
     {273, "set_robust_list", 2, NUM, STRUCT_ROBUST_LIST_HEAD_P, NUM, 0, 0, 0,
         0},
     {274, "get_robust_list", 3, NUM, NUM, STRUCT_ROBUST_LIST_HEAD_P, NUM_P, 0,
@@ -518,6 +531,44 @@ static syscall_t table[330] = {{0, "read", 3, NUM, NUM, VOID_P, NUM, 0, 0, 0},
     {326, "copy_file_range", 6, NUM, NUM, LNUM_P, NUM, LNUM_P, NUM, UNSIGNED},
     {327, "preadv2", 5, NUM, NUM, CONST_STRUCT_IOVEC_P, NUM, NUM, NUM, 0},
     {328, "pwritev2", 5, NUM, NUM, CONST_STRUCT_IOVEC_P, NUM, NUM, NUM, 0},
+    {329, "pkey_mprotect", 4, NUM, VOID_P, NUM, NUM, NUM, 0, 0},
+    {330, "pkey_alloc", 2, NUM, UNSIGNED, UNSIGNED, 0, 0, 0, 0},
+    {331, "pkey_free", 1, NUM, NUM, 0, 0, 0, 0, 0},
+    {332, "statx", 5, NUM, NUM, STRING, NUM, UNSIGNED, STRUCT_STATX_P, 0},
+    {333, "io_pgetevents", 6, NUM, NUM, NUM, NUM, STRUCT_IO_EVENT_P, NUM,
+        STRUCT_TIMESPEC_P},
+    {334, "rseq", 4, NUM, STRUCT_RSEQ_P, NUM, NUM, NUM, 0, 0},
+    {424, "pidfd_send_signal", 4, NUM, NUM, NUM, STRUCT_SIGINFO_P, UNSIGNED, 0,
+        0},
+    {425, "io_uring_setup", 2, NUM, UNSIGNED, STRUCT_IO_URING_PARAMS_P, 0, 0,
+        0, 0},
+    {426, "io_uring_enter", 6, NUM, NUM, UNSIGNED, UNSIGNED, UNSIGNED,
+        STRUCT_IO_URING_SQE_P, 0},
+    {427, "io_uring_register", 4, NUM, NUM, UNSIGNED, VOID_P, UNSIGNED, 0, 0},
+    {428, "open_tree", 4, NUM, NUM, STRING, UNSIGNED, 0, 0, 0},
+    {429, "move_mount", 5, NUM, NUM, STRING, STRING, UNSIGNED, 0, 0},
+    {430, "fsopen", 2, NUM, STRING, UNSIGNED, 0, 0, 0, 0},
+    {431, "fsconfig", 5, NUM, NUM, NUM, STRING, UNSIGNED, 0, 0},
+    {432, "fsmount", 5, NUM, NUM, NUM, UNSIGNED, 0, 0, 0},
+    {433, "fspick", 3, NUM, NUM, NUM, UNSIGNED, 0, 0, 0},
+    {434, "pidfd_open", 2, NUM, NUM, UNSIGNED, 0, 0, 0, 0},
+    {435, "clone3", 5, NUM, STRUCT_CLONE_ARGS_P, NUM, VOID_P, VOID_P, 0, 0},
+    {436, "close_range", 3, NUM, UNSIGNED, UNSIGNED, UNSIGNED, 0, 0, 0},
+    {437, "openat2", 4, NUM, NUM, STRING, STRUCT_OPEN_HOW_P, NUM, 0, 0},
+    {438, "pidfd_getfd", 3, NUM, NUM, UNSIGNED, UNSIGNED, 0, 0, 0},
+    {439, "faccessat2", 4, NUM, NUM, STRING, UNSIGNED, UNSIGNED, 0, 0},
+    {440, "process_madvise", 6, NUM, NUM, VOID_P, UNSIGNED, NUM, NUM, 0},
+    {441, "epoll_pwait2", 6, NUM, NUM, STRUCT_EPOLL_EVENT_P, NUM, NUM,
+        STRUCT_TIMESPEC_P, 0},
+    {442, "mount_setattr", 5, NUM, NUM, STRING, UNSIGNED, STRUCT_MOUNT_ATTR_P,
+        UNSIGNED, 0},
+    {443, "quotactl_fd", 4, NUM, NUM, STRING, NUM, STRUCT_CADDR, 0, 0},
+    {444, "landlock_create_ruleset", 4, NUM, STRUCT_LANDLOCK_RULESET_ATTR_P,
+        NUM, UNSIGNED, 0, 0},
+    {445, "landlock_add_rule", 3, NUM, NUM, STRUCT_LANDLOCK_RULE_P,
+        UNSIGNED, 0, 0},
+    {446, "landlock_restrict_self", 1, NUM, NUM, 0, 0, 0, 0, 0},
+    {447, "memfd_secret", 0, 0, 0, 0, 0, 0, 0, 0},
     {-1, NULL, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 

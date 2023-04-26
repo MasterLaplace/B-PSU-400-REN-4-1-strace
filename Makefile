@@ -24,13 +24,22 @@ ASM = nasm
 SRC_TEST = tests/main.S
 OBJ_TEST = $(SRC_TEST:.S=.o)
 
-all: $(NAME)
+CFLAGS +=	-L ./libs -lmy -llink
+
+CFLAGS += -I includes -I ../libs/my/include -I ../libs/link/include
+
+all: lib $(NAME)
 
 .S.o:
 	@$(ASM) -felf64 $< -o $@
 
 build_test: $(OBJ_TEST)
 	@gcc $(OBJ_TEST) -o $(NAME_TEST) -fno-builtin
+
+
+lib:
+	@make all -C ./libs $(NO_PRINT)
+	@echo -e $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
 
 MAIN		=	$(SRC_DIR)core.c
 
@@ -41,12 +50,14 @@ $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 clean:
+	@make clean -C ./libs $(NO_PRINT)
 	@$(RM) $(OBJ)
 	@$(RM) *~
 	@$(RM) *#
 	@$(RM) $(OBJ_TEST)
 
 fclean:	clean
+	@make fclean -C ./libs $(NO_PRINT)
 	@$(RM) $(NAME)
 	@$(RM) *.gcda
 	@$(RM) *.gcno
