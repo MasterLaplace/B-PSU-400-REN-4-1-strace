@@ -51,7 +51,15 @@ void delete_wave()
     do {
         wave_t *wave = (wave_t *)actual->obj;
 
-        list_remove(&(wave_list), actual, &free_wave);
+        if (wave->wavelength == 0) {
+            list_remove(&(wave_list), actual, &free_wave);
+            break;
+        }
+
+        // Si tu veux supprimer le dernier élément de la liste, tu fais ça:
+        list_remove(&(wave_list), wave_list->prev, &free_wave);
+        // Si tu veux supprimer le premier élément de la liste, tu fais ça:
+        list_remove(&(wave_list), wave_list, &free_wave);
 
         actual = actual->next;
     } while (wave_list && actual != wave_list);
@@ -59,7 +67,7 @@ void delete_wave()
 
 // Quand tu veux supprimer tous les éléments de la liste, tu fais ça:
 void delete_all_wave()
-    {
+{
     if (!wave_list)
             return;
     while (wave_list) {
