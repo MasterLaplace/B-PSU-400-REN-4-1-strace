@@ -129,6 +129,7 @@
     #define auto __auto_type
     #define TYPE table[i].rettype
     #define ARG table[i].arg[j]
+    #define BUFFER_SIZE 4096
     #include <stdlib.h>
     #include <sys/wait.h>
     #include <unistd.h>
@@ -144,11 +145,19 @@
     #include <ctype.h>
     #include <stddef.h>
     #include <stdbool.h>
+    #include <bits/types.h>
+    #include "lib.h"// ../../libs/link/include/
+    #include "link_list.h"
 
 typedef unsigned int sizint;
 typedef unsigned char byte;
 typedef struct user_regs_struct regs_t;
 typedef struct rusage rusage_t;
+
+typedef __uint8_t uint8_t;
+typedef __uint16_t uint16_t;
+typedef __uint32_t uint32_t;
+typedef __uint64_t uint64_t;
 
 typedef struct {
     int pid;
@@ -592,24 +601,24 @@ void print_struct(regs_t registers, int child, int register_index);
  * @param disp disp of the call (0x00)
  * @param imm imm of the call (0x00)
  */
-typedef struct __attribute__((packed)) call_s {
-    unsigned prefix: 8;
-    unsigned opcode: 24;
-    unsigned modrm: 8;
-    unsigned sib: 8;
-    unsigned disp: 32;
-    unsigned imm: 32;
-} call_t;
+// typedef struct __attribute__((packed)) call_s {
+//     unsigned prefix: 8;
+//     unsigned opcode: 24;
+//     unsigned modrm: 8;
+//     unsigned sib: 8;
+//     unsigned disp: 32;
+//     unsigned imm: 32;
+// } call_t;
 
 typedef struct maps_s {
-    char *line;
-    char *start;
-    char *end;
+    uint64_t start;
+    uint64_t end;
     char *perms;
     char *offset;
     char *dev;
     char *inode;
     char *pathname;
+    long rip;
     size_t len;
 } maps_t;
 
@@ -618,5 +627,10 @@ typedef struct maps_s {
 //     unsigned rel32: 32;
 // } call_t;
 
+void stock_maps(link_t **link, char *map, uint64_t rip);
+void print_map(link_t *map_list);
+void delete_all_map(link_t *map_list);
+
+void handle_opcode(regs_t regs, uint64_t rip, int pid);
 
 #endif  /* !SYSCALL_H_ */

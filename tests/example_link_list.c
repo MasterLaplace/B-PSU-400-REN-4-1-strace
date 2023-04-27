@@ -69,7 +69,7 @@ void delete_wave()
 void delete_all_wave()
 {
     if (!wave_list)
-            return;
+        return;
     while (wave_list) {
         list_remove(&(wave_list), wave_list, &free_wave);
     }

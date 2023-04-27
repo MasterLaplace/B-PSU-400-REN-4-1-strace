@@ -99,10 +99,12 @@ void loop(bool detail, pid_t pid, int *status)
         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
         wait4(pid, status, 0, &rusage);
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-        long rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
+        uint64_t rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL) & 0xffff;
 
-        if ((rip & 0xffff) == 0x050f)
+        handle_opcode(regs, rip, pid);
+        if (rip == 0x050f)
             func[detail](regs, rusage, status, pid);
+
         if (WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;

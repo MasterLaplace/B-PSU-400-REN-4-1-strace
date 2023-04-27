@@ -22,7 +22,7 @@ Status: complete ✅
 
 ## **DESCRIPTION**
 
-strace traces a prgram in real time and displays all of the system calls it executes in their order of appearance.<br>
+ftrace traces a prgram in real time and displays all of the system calls it executes in their order of appearance.<br>
 Develop an alternative to strace that implementing the following options:<br>
 
  • -p: force a specific PID instead of executing a command.<br>
@@ -36,6 +36,7 @@ Develop an alternative to strace that implementing the following options:<br>
 ```shell
 # Build
 $ make re
+
 # Run
 $ ./ftrace -s /bin/ls
 ```

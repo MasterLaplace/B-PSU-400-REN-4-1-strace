@@ -5,44 +5,33 @@
 ## Makefile
 ##
 
+
+
+# TAGS
+
+
 NO_PRINT 	= 	--no-print-directory
 OPTI		=	-Ofast -march=native
 CC 			= 	gcc
 NAME 		=	ftrace
 CFLAGS		=	$(OPTI) -I ./includes
+CFLAGS 		+=	-L ./libs -lmy -llink
+CFLAGS 		+= -I includes -I ./libs/my/include -I ./libs/link/include
 
 SRC	=	$(wildcard src/*.c) \
 		$(wildcard src/*/*.c)
 
-TEST 		= 	tests/unit_test.c
+OBJ	=	$(SRC:.c=.o)
 
-NAME_TEST = asm_test
-ASM = nasm
-SRC_TEST = tests/main.S
-OBJ_TEST = $(SRC_TEST:.S=.o)
 
-CFLAGS +=	-L ./libs -lmy -llink
 
-CFLAGS += -I includes -I ../libs/my/include -I ../libs/link/include
+# ALL
+
 
 all: lib $(NAME)
 
-.S.o:
-	@$(ASM) -felf64 $< -o $@
-
-build_test: $(OBJ_TEST)
-	@gcc $(OBJ_TEST) -o $(NAME_TEST) -fno-builtin
-
-
-lib:
-	@make all -C ./libs $(NO_PRINT)
-	@echo -e $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
-
-OBJ			=	$(SRC:.c=.o)
-
-
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
 
 clean:
 	@make clean -C ./libs $(NO_PRINT)
@@ -63,9 +52,41 @@ fclean:	clean
 
 re: fclean all
 
+
+
+# LIB
+
+
+lib:
+	@make all -C ./libs $(NO_PRINT)
+	@echo -e $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
+
+
+
+# DEBUG
+
+
 debug:	CFLAGS += -g3
-debug:	fclean $(OBJ)
-	@$(CC) -Og $(OBJ) -o $(NAME)
+debug:	fclean all
+
+
+
+# TESTS
+
+
+TEST 		= 	tests/unit_test.c
+
+NAME_TEST = asm_test
+ASM = nasm
+SRC_TEST = tests/main.S
+OBJ_TEST = $(SRC_TEST:.S=.o)
+
+
+.S.o:
+	@$(ASM) -felf64 $< -o $@
+
+build_test: $(OBJ_TEST)
+	@gcc $(OBJ_TEST) -o $(NAME_TEST) -fno-builtin
 
 tests_run: re build_test
 	@gcc -o unit_tests $(TEST) $(OBJ) $(CFLAGS) --coverage -lcriterion
@@ -77,6 +98,7 @@ coverage:
 
 coverage_b:
 	@gcovr -b --exclude tests/
+
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
