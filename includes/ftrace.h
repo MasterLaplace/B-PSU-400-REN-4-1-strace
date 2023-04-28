@@ -601,14 +601,10 @@ void print_struct(regs_t registers, int child, int register_index);
  * @param disp disp of the call (0x00)
  * @param imm imm of the call (0x00)
  */
-// typedef struct __attribute__((packed)) call_s {
-//     unsigned prefix: 8;
-//     unsigned opcode: 24;
-//     unsigned modrm: 8;
-//     unsigned sib: 8;
-//     unsigned disp: 32;
-//     unsigned imm: 32;
-// } call_t;
+typedef struct signal_s {
+    int num;
+    char *name;
+} signal_t;
 
 typedef struct maps_s {
     uint64_t start;
@@ -632,5 +628,6 @@ void print_map(link_t *map_list);
 void delete_all_map(link_t *map_list);
 
 void handle_opcode(regs_t regs, uint64_t rip, int pid);
+void handle_signal(rusage_t rusage, int *status, int pid);
 
 #endif  /* !SYSCALL_H_ */

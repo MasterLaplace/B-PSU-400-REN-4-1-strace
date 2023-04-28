@@ -101,6 +101,7 @@ void loop(bool detail, pid_t pid, int *status)
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
         uint64_t rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL) & 0xffff;
 
+        handle_signal(rusage, status, pid);
         handle_opcode(regs, rip, pid);
         if (rip == 0x050f)
             func[detail](regs, rusage, status, pid);

@@ -97,14 +97,12 @@ static void handle_in_stack(bool is_call, uint64_t rip, int pid)
 
 void handle_opcode(regs_t regs, uint64_t rip, int pid)
 {
-    // call_t call = *(call_t*) &rip;
-
     if (is_enter_calls(rip)) {
         printf("Entering function main at 0x%llx\n", rip);
         handle_in_stack(true, regs.rip, pid);
     }
     if (is_ret_calls(rip)) {
-        printf("Leaving function main at 0x%llx\n", rip);
+        printf("Leaving function main", rip);
         handle_in_stack(false, regs.rip, pid);
     }
 }

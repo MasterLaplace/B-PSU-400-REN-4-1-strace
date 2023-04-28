@@ -73,12 +73,12 @@ void print_map(link_t *map_list)
     do {
         maps_t *map = (maps_t *)actual->obj;
 
-        printf("start: %lx\n", map->start);
-        printf("end: %lx\n", map->end);
-        printf("perms: %s\n", map->perms);
-        printf("offset: %s\n", map->offset);
-        printf("dev: %s\n", map->dev);
-        printf("inode: %s\n", map->inode);
+        // printf("start: %lx\n", map->start);
+        // printf("end: %lx\n", map->end);
+        // printf("perms: %s\n", map->perms);
+        // printf("offset: %s\n", map->offset);
+        // printf("dev: %s\n", map->dev);
+        // printf("inode: %s\n", map->inode);
         printf("pathname: %s\n", map->pathname);
 
         actual = actual->next;
