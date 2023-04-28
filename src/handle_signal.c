@@ -7,6 +7,7 @@
 
 #include "ftrace.h"
 #include <signal.h>
+#include <bits/types/siginfo_t.h>
 
 static const signal_t SIGNALS[39] = {
     {SIGHUP, "SIGHUP"},
@@ -50,18 +51,19 @@ static const signal_t SIGNALS[39] = {
     {0, NULL}
 };
 
-void handle_signal(rusage_t rusage, int *status, int pid)
+void handle_signal(int pid)
 {
-    int sig = WSTOPSIG(*status);
+    siginfo_t signal = {0};
 
-    if (sig == SIGTRAP)
+    if (ptrace(PTRACE_GETSIGINFO, pid, NULL, &signal) == -1)
         return;
-    for (int i = 0; SIGNALS[i].num != 0; i++) {
-        if (SIGNALS[i].num != sig)
+    for (int i = 0; SIGNALS[i].num; i++) {
+        if (signal.si_signo == SIGTRAP) {
             continue;
-        printf("Received signal %s\n", SIGNALS[i].name);
-        ptrace(PTRACE_CONT, pid, NULL, NULL);
-        wait4(pid, status, 0, &rusage);
-        return;
+        }
+        if (SIGNALS[i].num == signal.si_signo) {
+            printf("Received signal %s\n", SIGNALS[i].name);
+            return;
+        }
     }
 }

@@ -628,6 +628,6 @@ void print_map(link_t *map_list);
 void delete_all_map(link_t *map_list);
 
 void handle_opcode(regs_t regs, uint64_t rip, int pid);
-void handle_signal(rusage_t rusage, int *status, int pid);
+void handle_signal(int pid);
 
 #endif  /* !SYSCALL_H_ */
