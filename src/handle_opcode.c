@@ -92,7 +92,7 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
     if (is_call) {
         stock_maps(stack, str, rip);
         maps_t *map = (maps_t *)(*stack)->prev->obj;
-         map->function_name = get_function_name(map->pathname, rip);
+        map->function_name = get_function_name(map->pathname, rip);
         printf("Entering function %s at 0x%llx\n", map->function_name, rip);
     } else {
         maps_t *map = (maps_t *)(*stack)->prev->obj;
