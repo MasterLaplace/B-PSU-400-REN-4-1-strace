@@ -51,7 +51,7 @@ static const signal_t SIGNALS[39] = {
     {0, NULL}
 };
 
-void handle_signal(int pid)
+void handle_signal(pid_t pid)
 {
     siginfo_t signal = {0};
 

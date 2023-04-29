@@ -615,6 +615,7 @@ typedef struct maps_s {
     char *inode;
     char *pathname;
     long rip;
+    char *function_name;
     size_t len;
 } maps_t;
 
@@ -626,8 +627,10 @@ typedef struct maps_s {
 void stock_maps(link_t **link, char *map, uint64_t rip);
 void print_map(link_t *map_list);
 void delete_all_map(link_t *map_list);
+void free_map(void *obj);
 
-void handle_opcode(regs_t regs, uint64_t rip, int pid);
-void handle_signal(int pid);
+void handle_opcode(regs_t regs, uint64_t rip, pid_t pid, link_t **stack);
+void handle_signal(pid_t pid);
+char *get_function_name(const char *bin_name, uint64_t val);
 
 #endif  /* !SYSCALL_H_ */

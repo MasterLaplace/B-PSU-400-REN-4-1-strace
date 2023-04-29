@@ -73,12 +73,13 @@ void print_map(link_t *map_list)
     do {
         maps_t *map = (maps_t *)actual->obj;
 
-        // printf("start: %lx\n", map->start);
-        // printf("end: %lx\n", map->end);
-        // printf("perms: %s\n", map->perms);
-        // printf("offset: %s\n", map->offset);
-        // printf("dev: %s\n", map->dev);
-        // printf("inode: %s\n", map->inode);
+        printf("rip: %lx\n", map->rip);
+        printf("start: %lx\n", map->start);
+        printf("end: %lx\n", map->end);
+        printf("perms: %s\n", map->perms);
+        printf("offset: %s\n", map->offset);
+        printf("dev: %s\n", map->dev);
+        printf("inode: %s\n", map->inode);
         printf("pathname: %s\n", map->pathname);
 
         actual = actual->next;
@@ -90,7 +91,7 @@ void print_map(link_t *map_list)
  *
  * @param obj  map struct
  */
-static void free_map(void *obj)
+void free_map(void *obj)
 {
     maps_t *map = (maps_t *)obj;
 
@@ -99,6 +100,7 @@ static void free_map(void *obj)
     free(map->dev);
     free(map->inode);
     free(map->pathname);
+    free(map->function_name);
     free(map);
 }
 

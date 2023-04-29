@@ -94,6 +94,7 @@ void loop(bool detail, pid_t pid, int *status)
 {
     regs_t regs;
     rusage_t rusage;
+    link_t *stack = NULL;
 
     while (true) {
         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
@@ -102,13 +103,13 @@ void loop(bool detail, pid_t pid, int *status)
         uint64_t rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL) & 0xffff;
 
         handle_signal(pid);
-        handle_opcode(regs, rip, pid);
+        handle_opcode(regs, rip, pid, &stack);
         if (rip == 0x050f)
             func[detail](regs, rusage, status, pid);
-
         if (WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;
         }
     }
+    delete_all_map(stack);
 }

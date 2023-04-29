@@ -20,18 +20,18 @@ static const uint64_t calls_opcode[] = {
     0x9a,     // CALL ptr16:16
     0xff,   // CALL r/m16 / 2
     0xff,   // CALL m16:16 / 3
-    0x80cd,
-    0x050f,
-    0x00ff,
-    0xff41,
+    0x80cd,   // CALL imm16
+    0x050f,   // CALL func
+    0x00ff,   // CALL (reg16)
+    0xff41,   // CALL (reg32)
     0x0
 };
 
 static const uint64_t ret_opcode[] = {
-    0xc3,
-    0xc2,
-    0xcb,
-    0xca,
+    0xc3,     // RET
+    0xc2,     // RET imm16
+    0xcb,     // RETF
+    0xca,     // RETF imm16
     0x0
 };
 
@@ -72,7 +72,7 @@ static bool is_ret_calls(uint64_t rip)
     return false;
 }
 
-static char *get_maps(int pid)
+static char *get_maps(pid_t pid)
 {
     char command[25];
     sprintf(command, "cat /proc/%d/maps", pid);
@@ -84,25 +84,30 @@ static char *get_maps(int pid)
     return strdup(str);
 }
 
-static void handle_in_stack(bool is_call, uint64_t rip, int pid)
+static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
+    link_t **stack)
 {
     char *str = get_maps(pid);
-    link_t *link = NULL;
 
-    stock_maps(&link, str, rip);
-    print_map(link);
-    delete_all_map(link);
+    if (is_call) {
+        stock_maps(stack, str, rip);
+        maps_t *map = (maps_t *)(*stack)->prev->obj;
+         map->function_name = get_function_name(map->pathname, rip);
+        printf("Entering function %s at 0x%llx\n", map->function_name, rip);
+    } else {
+        maps_t *map = (maps_t *)(*stack)->prev->obj;
+        printf("Leaving function %s\n", map->function_name);
+        list_remove(stack, (*stack)->prev, &free_map);
+    }
     free(str);
 }
 
-void handle_opcode(regs_t regs, uint64_t rip, int pid)
+void handle_opcode(regs_t regs, uint64_t rip, pid_t pid, link_t **stack)
 {
     if (is_enter_calls(rip)) {
-        printf("Entering function main at 0x%llx\n", rip);
-        handle_in_stack(true, regs.rip, pid);
+        handle_in_stack(true, regs.rip, pid, stack);
     }
     if (is_ret_calls(rip)) {
-        printf("Leaving function main", rip);
-        handle_in_stack(false, regs.rip, pid);
+        handle_in_stack(false, regs.rip, pid, stack);
     }
 }

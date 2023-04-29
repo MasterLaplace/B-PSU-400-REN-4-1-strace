@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <elf.h>
 
-static char *get_name(void *buf, int val, Elf64_Shdr *symtab,
+static char *get_name(void *buf, uint64_t val, Elf64_Shdr *symtab,
     Elf64_Shdr *strtab)
 {
     Elf64_Sym *sym = (Elf64_Sym *)(buf + symtab->sh_offset);
@@ -29,7 +29,7 @@ static char *get_name(void *buf, int val, Elf64_Shdr *symtab,
     return strdup("unknown");
 }
 
-char *get_function_name(char *bin_name, int val)
+char *get_function_name(const char *bin_name, uint64_t val)
 {
     struct stat statbuf;
     int fd = open(bin_name, O_RDONLY);
