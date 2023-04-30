@@ -14,7 +14,7 @@ static void print_usage(data_t data);
 static void exec_detail(data_t data);
 static void set_process(data_t data);
 static const command_t command[4] = {
-    {"-h", &print_usage},
+    {"--help", &print_usage},
     {"-s", &exec_detail},
     {"-p", &set_process},
     {NULL, NULL, 0}
@@ -41,7 +41,7 @@ static int is_num(char *str)
  */
 static void print_usage(data_t data)
 {
-    printf("Usage: ftrace [-h] [-s] [-p pid program] program [args ...]\n");
+    printf("USAGE: ftrace <command>\n");
 }
 
 /**

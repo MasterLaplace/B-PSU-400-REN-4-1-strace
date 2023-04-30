@@ -37,8 +37,11 @@ Develop an alternative to strace that implementing the following options:<br>
 # Build
 $ make re
 
+# Bonus
+$ ./script/syscall_table.py
+
 # Run
-$ ./ftrace -s /bin/ls
+$ ./ftrace /bin/ls
 ```
 
 <div id='contacts'/>
@@ -46,6 +49,7 @@ $ ./ftrace -s /bin/ls
 ## **CONTACTS**
 
 [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
+[![GitHub awisemanoncesaid](https://img.shields.io/github/followers/awisemanoncesaid?label=awisemanoncesaid&style=social)](https://github.com/awisemanoncesaid)
 [![GitHub Martinouaiouaiouai](https://img.shields.io/github/followers/Martinouaiouaiouai?label=Martinouaiouaiouai&style=social)](https://github.com/Martinouaiouaiouai)
 
 ---
