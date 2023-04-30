@@ -239,7 +239,7 @@ QT_AUTOBRIEF           = NO
 # not recognized any more.
 # The default value is: NO.
 
-MULTILINE_CPP_IS_BRIEF = NO
+MULTILINE_CPP_IS_BRIEF = YES
 
 # By default Python docstrings are displayed as preformatted text and doxygen's
 # special commands cannot be used. By setting PYTHON_DOCSTRING to NO the
@@ -342,7 +342,7 @@ OPTIMIZE_OUTPUT_SLICE  = NO
 #
 # Note see also the list of default file extension mappings.
 
-EXTENSION_MAPPING      =
+EXTENSION_MAPPING      = YES
 
 # If the MARKDOWN_SUPPORT tag is enabled then doxygen pre-processes all comments
 # according to the Markdown format, which allows for more readable

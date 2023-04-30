@@ -632,5 +632,6 @@ void free_map(void *obj);
 void handle_opcode(regs_t regs, uint16_t rip, pid_t pid, link_t **stack);
 void handle_signal(pid_t pid);
 char *get_function_name(const char *bin_name, uint64_t val);
+uint64_t calculate_offset(pid_t pid, uint64_t rip);
 
 #endif  /* !SYSCALL_H_ */

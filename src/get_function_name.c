@@ -15,6 +15,15 @@
 #include <unistd.h>
 #include <elf.h>
 
+/**
+ * @brief Get the name object from the binary file
+ *
+ * @param buf  binary file
+ * @param val  address of the function
+ * @param symtab  symbol table
+ * @param strtab  string table
+ * @return char*  name of the function
+ */
 static char *get_name(void *buf, uint64_t val, Elf64_Shdr *symtab,
     Elf64_Shdr *strtab)
 {
@@ -29,6 +38,13 @@ static char *get_name(void *buf, uint64_t val, Elf64_Shdr *symtab,
     return strdup("unknown");
 }
 
+/**
+ * @brief Get the function name object from the binary file
+ *
+ * @param bin_name  binary file name
+ * @param val  address of the function
+ * @return char*  name of the function
+ */
 char *get_function_name(const char *bin_name, uint64_t val)
 {
     struct stat statbuf;
