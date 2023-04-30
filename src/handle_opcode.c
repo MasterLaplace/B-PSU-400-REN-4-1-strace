@@ -94,16 +94,16 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
     if (is_call) {
         stock_maps(stack, str, rip);
         if ((*stack)) {
-        maps_t *map = (maps_t *)(*stack)->prev->obj;
-        map->function_name = get_function_name(map->pathname, rip);
+            maps_t *map = (maps_t *)(*stack)->prev->obj;
+            map->function_name = get_function_name(map->pathname, rip);
             printf("Entering function %s at 0x%llx\n", map->function_name,
                 rip);
         }
     } else {
         if ((*stack)) {
-        maps_t *map = (maps_t *)(*stack)->prev->obj;
-        printf("Leaving function %s\n", map->function_name);
-        list_remove(stack, (*stack)->prev, &free_map);
+            maps_t *map = (maps_t *)(*stack)->prev->obj;
+            printf("Leaving function %s\n", map->function_name);
+            list_remove(stack, (*stack)->prev, &free_map);
         }
     }
     free(str);
@@ -112,9 +112,15 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
 void handle_opcode(regs_t regs, uint16_t rip, pid_t pid, link_t **stack)
 {
     if (is_enter_calls(rip)) {
+        ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
+        wait4(pid, 0, 0, NULL);
+        ptrace(PTRACE_GETREGS, pid, NULL, &regs);
         handle_in_stack(true, regs.rip, pid, stack);
     }
     if (is_ret_calls(rip)) {
+        ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
+        wait4(pid, 0, 0, NULL);
+        ptrace(PTRACE_GETREGS, pid, NULL, &regs);
         handle_in_stack(false, regs.rip, pid, stack);
     }
 }

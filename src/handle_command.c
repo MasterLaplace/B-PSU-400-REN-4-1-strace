@@ -41,7 +41,7 @@ static int is_num(char *str)
  */
 static void print_usage(data_t data)
 {
-    printf("Usage: strace [-h] [-s] [-p pid program] program [args ...]\n");
+    printf("Usage: ftrace [-h] [-s] [-p pid program] program [args ...]\n");
 }
 
 /**
