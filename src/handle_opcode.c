@@ -57,7 +57,7 @@ static bool is_enter_calls(uint16_t rip)
     for (int i = 0; calls_opcode[i] != 0; i++) {
         if (rip == calls_opcode[i])
             return true;
-        else if ((0xFF & rip) == (0xFF & calls_opcode[i])
+        if ((0xFF & rip) == (0xFF & calls_opcode[i])
             && (0xFF00 & calls_opcode[i]) == 0)
             return true;
     }
@@ -69,7 +69,7 @@ static bool is_ret_calls(uint16_t rip)
     for (int i = 0; ret_opcode[i] != 0; i++) {
         if (rip == ret_opcode[i])
             return true;
-        else if ((0xFF & rip) == (0xFF & ret_opcode[i])
+        if ((0xFF & rip) == (0xFF & ret_opcode[i])
             && (0xFF00 & ret_opcode[i]) == 0)
             return true;
     }
