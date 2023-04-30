@@ -15,19 +15,15 @@ static const uint64_t syscalls[] = {
     0x0
 };
 
-static const uint64_t calls_opcode[] = {
+static const uint16_t calls_opcode[] = {
     0xe8,     // CALL rel32
     0x9a,     // CALL ptr16:16
-    0xff,   // CALL r/m16 / 2
-    0xff,   // CALL m16:16 / 3
-    0x80cd,   // CALL imm16
-    0x050f,   // CALL func
     0x00ff,   // CALL (reg16)
     0xff41,   // CALL (reg32)
     0x0
 };
 
-static const uint64_t ret_opcode[] = {
+static const uint16_t ret_opcode[] = {
     0xc3,     // RET
     0xc2,     // RET imm16
     0xcb,     // RETF
@@ -54,19 +50,25 @@ static const uint64_t calls[] = {
     0x0       // End of list marker
 };
 
-static bool is_enter_calls(uint64_t rip)
+static bool is_enter_calls(uint16_t rip)
 {
     for (int i = 0; calls_opcode[i] != 0; i++) {
         if (rip == calls_opcode[i])
+            return true;
+        else if ((0xFF & rip) == (0xFF & calls_opcode[i])
+            && (0xFF00 & calls_opcode[i]) == 0)
             return true;
     }
     return false;
 }
 
-static bool is_ret_calls(uint64_t rip)
+static bool is_ret_calls(uint16_t rip)
 {
     for (int i = 0; ret_opcode[i] != 0; i++) {
         if (rip == ret_opcode[i])
+            return true;
+        else if ((0xFF & rip) == (0xFF & ret_opcode[i])
+            && (0xFF00 & ret_opcode[i]) == 0)
             return true;
     }
     return false;
@@ -91,18 +93,23 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
 
     if (is_call) {
         stock_maps(stack, str, rip);
+        if ((*stack)) {
         maps_t *map = (maps_t *)(*stack)->prev->obj;
         map->function_name = get_function_name(map->pathname, rip);
-        printf("Entering function %s at 0x%llx\n", map->function_name, rip);
+            printf("Entering function %s at 0x%llx\n", map->function_name,
+                rip);
+        }
     } else {
+        if ((*stack)) {
         maps_t *map = (maps_t *)(*stack)->prev->obj;
         printf("Leaving function %s\n", map->function_name);
         list_remove(stack, (*stack)->prev, &free_map);
+        }
     }
     free(str);
 }
 
-void handle_opcode(regs_t regs, uint64_t rip, pid_t pid, link_t **stack)
+void handle_opcode(regs_t regs, uint16_t rip, pid_t pid, link_t **stack)
 {
     if (is_enter_calls(rip)) {
         handle_in_stack(true, regs.rip, pid, stack);

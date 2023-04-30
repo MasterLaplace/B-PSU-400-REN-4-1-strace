@@ -69,3 +69,5 @@ vgcore.*
 ftrace
 *.yxy
 *.log
+*.txt
+test

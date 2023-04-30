@@ -10,6 +10,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+void init_maillont(maps_t *maillont, char **tmp, size_t len_tmp, uint64_t rip)
+{
+    maillont->rip = rip;
+    maillont->perms = strdup(tmp[1]);
+    maillont->offset = strdup(tmp[2]);
+    maillont->dev = strdup(tmp[3]);
+    maillont->inode = strdup(tmp[4]);
+    maillont->pathname = (len_tmp == 6) ? strdup(tmp[5]) : NULL;
+    maillont->function_name = NULL;
+}
+
 /**
  * @brief stock the value of the map in a struct maps_t
  * and append it to the link list if the rip is in the map
@@ -25,20 +37,16 @@ static void stock_value(link_t **link, char *line, uint64_t rip)
     size_t len_tmp = 0;
 
     for (; tmp[len_tmp]; len_tmp++);
+    if (char_in_list('-', tmp[0]) != -1) {
     sscanf(tmp[0], "%lx-%lx", &maillont->start, &maillont->end);
     if (rip >= maillont->start && rip <= maillont->end) {
-        maillont->rip = rip;
-        maillont->perms = strdup(tmp[1]);
-        maillont->offset = strdup(tmp[2]);
-        maillont->dev = strdup(tmp[3]);
-        maillont->inode = strdup(tmp[4]);
-        maillont->pathname = (len_tmp == 6) ? strdup(tmp[5]) : NULL;
+            init_maillont(maillont, tmp, len_tmp, rip);
         list_append(link, create_link(maillont));
     } else
         free(maillont);
-    for (size_t i = 0; tmp[i]; i++)
-        free(tmp[i]);
-    free(tmp);
+    } else
+        free(maillont);
+    my_two_free(tmp);
 }
 
 /**
@@ -60,33 +68,6 @@ void stock_maps(link_t **link, char *map, uint64_t rip)
 }
 
 /**
- * @brief print the map list in the stdout for debug
- *
- * @param map_list  link list of maps
- */
-void print_map(link_t *map_list)
-{
-    link_t *actual = map_list;
-
-    if (!actual)
-        return;
-    do {
-        maps_t *map = (maps_t *)actual->obj;
-
-        printf("rip: %lx\n", map->rip);
-        printf("start: %lx\n", map->start);
-        printf("end: %lx\n", map->end);
-        printf("perms: %s\n", map->perms);
-        printf("offset: %s\n", map->offset);
-        printf("dev: %s\n", map->dev);
-        printf("inode: %s\n", map->inode);
-        printf("pathname: %s\n", map->pathname);
-
-        actual = actual->next;
-    } while (map_list && actual != map_list);
-}
-
-/**
  * @brief free the map struct and his content
  *
  * @param obj  map struct
@@ -100,6 +81,7 @@ void free_map(void *obj)
     free(map->dev);
     free(map->inode);
     free(map->pathname);
+    if (map->function_name)
     free(map->function_name);
     free(map);
 }

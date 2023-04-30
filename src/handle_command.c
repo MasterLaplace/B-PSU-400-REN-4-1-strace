@@ -79,6 +79,7 @@ static void set_process(data_t data)
 
         loop(false, data.pid, &status);
     }
+    ptrace(PTRACE_DETACH, data.pid, NULL, NULL);
 }
 
 /**
