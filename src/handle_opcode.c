@@ -18,6 +18,8 @@ static const uint64_t syscalls[] = {
 static const uint16_t calls_opcode[] = {
     0xe8,     // CALL rel32
     0x9a,     // CALL ptr16:16
+    0xffd2,   // CALL r16
+    0xffd3,   // CALL r32
     0x00ff,   // CALL (reg16)
     0xff41,   // CALL (reg32)
     0x0
@@ -95,7 +97,8 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
         stock_maps(stack, str, rip);
         if ((*stack)) {
             maps_t *map = (maps_t *)(*stack)->prev->obj;
-            map->function_name = get_function_name(map->pathname, rip);
+            uint64_t offset = calculate_offset(pid, rip);
+            map->function_name = get_function_name(map->pathname, offset);
             printf("Entering function %s at 0x%llx\n", map->function_name,
                 rip);
         }

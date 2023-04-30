@@ -70,3 +70,34 @@ char *get_mode_type(dev_t mode)
             return "?";
     }
 }
+
+/**
+ * @brief Calculate the offset of the call
+ * instruction in the binary file
+ *
+ * @param pid  The pid of the process
+ * @param rip  The rip of the process
+ * @return uint64_t  The offset of the call instruction
+ */
+uint64_t calculate_offset(pid_t pid, uint64_t rip)
+{
+    struct user_regs_struct regs;
+    uint16_t *rip_ptr = (uint16_t *)&rip;
+
+    ptrace(PTRACE_PEEKTEXT, pid, rip, NULL);
+    if ((uint16_t)(*rip_ptr) == 0x9a) {
+        uint16_t addr_low = 0xffff & ptrace(PTRACE_PEEKDATA, pid, rip + 1);
+        uint16_t addr_high = 0xffff & ptrace(PTRACE_PEEKDATA, pid, rip + 3);
+        return (addr_high << 16) | addr_low;
+    } else if ((uint16_t)(*rip_ptr) == 0xffd2) {
+        ptrace(PTRACE_GETREGS, pid, NULL, &regs);
+        uint16_t reg = 0xffff & ptrace(PTRACE_PEEKDATA, pid, rip + 1, NULL);
+        return regs.rip - reg;
+    }
+    if ((uint16_t)(*rip_ptr) == 0xffd3) {
+        ptrace(PTRACE_GETREGS, pid, NULL, &regs);
+        uint32_t reg = ptrace(PTRACE_PEEKDATA, pid, rip + 1, NULL);
+        return regs.rip - reg;
+    }
+    return rip;
+}

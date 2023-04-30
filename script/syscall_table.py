@@ -62,7 +62,7 @@ def handler(signum, frame):
 # need to search on google "syscall_name site:man7.org/linux/man-pages" and goto the page https://man7.org/linux/man-pages/man2/syscalls.2.html
 
 if __name__ == "__main__":
-    # Set a timeout of 30 seconds
+    # Set a timeout of 90 seconds
     signal.signal(signal.SIGALRM, handler)
     signal.alarm(90)
 
@@ -156,3 +156,4 @@ if __name__ == "__main__":
     # create the syscall.h file
     file = open("syscall.h", "w")
     file.write(Start_of_file)
+    os.remove("syscall_table.txt")
