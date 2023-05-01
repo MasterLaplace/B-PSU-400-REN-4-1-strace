@@ -55,7 +55,7 @@ static void exec_detail(data_t data)
 
     if (!(child = fork())) {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execve(data.program, NULL, NULL);
+        execve(data.program, data.av, NULL);
     } else {
         int status;
 
@@ -94,7 +94,7 @@ int handle_command(int ac, char **av)
     for (int i = 0; ac >= 2 && command[i].key != NULL; ++i) {
         if (strcmp(command[i].key, av[1]) != 0)
             continue;
-        auto data = (data_t) { 0, av[2], NULL, true };
+        auto data = (data_t) { 0, av[2], &av[2], true };
         if (command[i].has_pid && ac >= 4) {
             data.pid = is_num(av[2]);
             data.program = av[3];
@@ -104,7 +104,7 @@ int handle_command(int ac, char **av)
         return 0;
     }
     if (ac >= 2) {
-        auto data = (data_t) { 0, av[1], NULL, false };
+        auto data = (data_t) { 0, av[1], &av[1], false };
         exec_detail(data);
         return 0;
     } else

@@ -95,21 +95,23 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
 
     if (is_call) {
         stock_maps(stack, str, rip);
-        if ((*stack)) {
-            maps_t *map = (maps_t *)(*stack)->prev->obj;
-            uint64_t offset = calculate_offset(pid, rip);
-            map->function_name = get_function_name(map->pathname, offset);
-            printf("Entering function %s at 0x%llx\n", map->function_name,
-                rip);
-        }
-    } else {
-        if ((*stack)) {
-            maps_t *map = (maps_t *)(*stack)->prev->obj;
-            printf("Leaving function %s\n", map->function_name);
+        if (!(*stack))
+            goto end;
+        maps_t *map = (maps_t *)(*stack)->prev->obj;
+        uint64_t offset = calculate_offset(pid, rip);
+        if (!(map->function_name = get_function_name(map->pathname, offset))) {
             list_remove(stack, (*stack)->prev, &free_map);
+            goto end;
         }
+        printf("Entering function %s at 0x%llx\n", map->function_name, rip);
+    } else {
+        if (!(*stack))
+            goto end;
+        maps_t *map = (maps_t *)(*stack)->prev->obj;
+        printf("Leaving function %s\n", map->function_name);
+        list_remove(stack, (*stack)->prev, &free_map);
     }
-    free(str);
+    end: { free(str); }
 }
 
 void handle_opcode(regs_t regs, uint16_t rip, pid_t pid, link_t **stack)

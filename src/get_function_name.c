@@ -35,7 +35,7 @@ static char *get_name(void *buf, uint64_t val, Elf64_Shdr *symtab,
             return strdup(str + sym[i].st_name);
         }
     }
-    return strdup("unknown");
+    return NULL;
 }
 
 /**
