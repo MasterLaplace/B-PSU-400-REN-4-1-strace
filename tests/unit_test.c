@@ -9,15 +9,14 @@
 #include <criterion/redirect.h>
 #include "ftrace.h"
 
-static void redirect_all_std(void)
+Test(unit_test, get_register)
 {
-    cr_redirect_stdout();
-    cr_redirect_stderr();
+    regs_t regs = {0};
+    int j = 0;
+    int expected = 0;
+    typeof(8ULL) actual = 0;
+
+    actual = get_register(regs, j);
+    cr_assert_eq(actual, expected);
 }
 
-Test(unit_test, test1, .init = redirect_all_std)
-{
-    int ret = handle_command(1, (char *[]){"./strace", "-h"});
-
-    cr_assert_eq(ret, 0);
-}

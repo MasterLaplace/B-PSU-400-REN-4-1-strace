@@ -39,6 +39,7 @@ clean:
 	@$(RM) *~
 	@$(RM) *#
 	@$(RM) $(OBJ_TEST)
+	@$(RM) $(OBJ_TESTS)
 
 fclean:	clean
 	@make fclean -C ./libs $(NO_PRINT)
@@ -74,7 +75,8 @@ debug:	fclean all
 # TESTS
 
 
-TEST 		= 	tests/unit_test.c
+TESTS 		= 	tests/unit_test.c
+OBJ_TESTS 	= 	$(TESTS:.c=.o)
 
 NAME_TEST = asm_test
 ASM = nasm
@@ -88,8 +90,12 @@ OBJ_TEST = $(SRC_TEST:.S=.o)
 build_test: $(OBJ_TEST)
 	@gcc $(OBJ_TEST) -o $(NAME_TEST) -fno-builtin
 
-tests_run: re build_test
-	@gcc -o unit_tests $(TEST) $(OBJ) $(CFLAGS) --coverage -lcriterion
+
+OK = src/utils.c
+OBJ_OK = $(OK:.c=.o)
+
+tests_run: re $(OBJ_TESTS)
+	@gcc -o unit_tests $(OBJ_TESTS) $(OBJ_OK) $(CFLAGS) --coverage -lcriterion
 	@./unit_tests
 	@$(RM) unit_tests
 
