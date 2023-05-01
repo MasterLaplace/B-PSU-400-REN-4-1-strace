@@ -105,6 +105,5 @@ coverage:
 coverage_b:
 	@gcovr -b --exclude tests/
 
-
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

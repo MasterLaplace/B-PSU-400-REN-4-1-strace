@@ -19,4 +19,3 @@ Test(unit_test, get_register)
     actual = get_register(regs, j);
     cr_assert_eq(actual, expected);
 }
-

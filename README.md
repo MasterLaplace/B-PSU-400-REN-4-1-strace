@@ -41,7 +41,7 @@ $ make re
 $ ./script/syscall_table.py
 
 # Run
-$ ./ftrace /bin/ls | grep -v "function unknown"
+$ ./ftrace -s /bin/ls | grep -v "function unknown"
 ```
 
 <div id='contacts'/>
