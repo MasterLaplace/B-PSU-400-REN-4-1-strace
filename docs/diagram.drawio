@@ -1,0 +1,31 @@
+<mxfile host="65bd71144e">
+    <diagram id="WcZPpLrjSxnmsJRQW3vH" name="Page-1">
+        <mxGraphModel dx="618" dy="427" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="5" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Main: binary name" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="90" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Handle Command: execute the binaire" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="90" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="6" target="8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Loop:&lt;br&gt;- We Have: the PID of the binaire.&lt;br&gt;- What We Do: catch the registers using ptrace&lt;br&gt;- What We Do Not Yet: If RIP == syscall -&amp;gt; strace&lt;br&gt;Else -&amp;gt; go down" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="430" y="75" width="340" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;div style=&quot;background-color: rgb(20, 24, 24); line-height: 19px;&quot;&gt;&lt;font style=&quot;font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px;&quot; color=&quot;#f8f8f8&quot;&gt;cast RIP in&amp;nbsp;&lt;/font&gt;&lt;font style=&quot;font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px;&quot; color=&quot;#a0ff20&quot;&gt;call_t&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px;&quot; color=&quot;#ffffff&quot;&gt;use &quot;&lt;/font&gt;&lt;font face=&quot;Droid Sans Mono, monospace, monospace&quot; color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;cat /proc/PID/maps&quot;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;background-color: rgb(20, 24, 24); line-height: 19px;&quot;&gt;&lt;font face=&quot;Droid Sans Mono, monospace, monospace&quot; color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;parse map&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;background-color: rgb(20, 24, 24); line-height: 19px;&quot;&gt;&lt;font face=&quot;Droid Sans Mono, monospace, monospace&quot; color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;use &quot;cat /proc/PID/exe&quot;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;background-color: rgb(20, 24, 24); line-height: 19px;&quot;&gt;&lt;font face=&quot;Droid Sans Mono, monospace, monospace&quot; color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;parse exe&lt;br&gt;&lt;/span&gt;&lt;/font&gt;manage Offset according to the opCode&lt;br&gt;print the function we get&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="430" y="210" width="340" height="170" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

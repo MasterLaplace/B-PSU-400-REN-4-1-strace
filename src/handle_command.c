@@ -5,7 +5,7 @@
 ** handle_command
 */
 
-#include "strace.h"
+#include "ftrace.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,8 +28,8 @@ static const command_t command[4] = {
  */
 static int is_num(char *str)
 {
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] < '0' || str[i] > '9')
+    for (unsigned int i = 0; str[i]; i++)
+        if (!isdigit(str[i]))
             return 0;
     return atoi(str);
 }
@@ -41,7 +41,7 @@ static int is_num(char *str)
  */
 static void print_usage(data_t data)
 {
-    printf("Usage: strace [-h] [-s] [-p pid program] program [args ...]\n");
+    printf("USAGE: ftrace [-h] [-s] [-p pid program] program [args ...]\n");
 }
 
 /**
@@ -51,12 +51,11 @@ static void print_usage(data_t data)
  */
 static void exec_detail(data_t data)
 {
-    printf("Printing Process Details on %s\n", data.program);
     pid_t child;
 
     if (!(child = fork())) {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execve(data.program, NULL, NULL);
+        execve(data.program, data.av, NULL);
     } else {
         int status;
 
@@ -80,6 +79,7 @@ static void set_process(data_t data)
 
         loop(false, data.pid, &status);
     }
+    ptrace(PTRACE_DETACH, data.pid, NULL, NULL);
 }
 
 /**
@@ -94,7 +94,7 @@ int handle_command(int ac, char **av)
     for (int i = 0; ac >= 2 && command[i].key != NULL; ++i) {
         if (strcmp(command[i].key, av[1]) != 0)
             continue;
-        auto data = (data_t) { 0, av[2], NULL, true };
+        auto data = (data_t) { 0, av[2], &av[2], true };
         if (command[i].has_pid && ac >= 4) {
             data.pid = is_num(av[2]);
             data.program = av[3];
@@ -104,7 +104,7 @@ int handle_command(int ac, char **av)
         return 0;
     }
     if (ac >= 2) {
-        auto data = (data_t) { 0, av[1], NULL, false };
+        auto data = (data_t) { 0, av[1], &av[1], false };
         exec_detail(data);
         return 0;
     } else

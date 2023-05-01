@@ -1,4 +1,4 @@
-# ME : B-PSU-400-REN-4-1-strace<br><br><p align="center">STRACE</p>
+# ME : B-PSU-400-REN-4-1-ftrace<br><br><p align="center">FTRACE</p>
 
 <p align="center">
   <a>
@@ -22,7 +22,7 @@ Status: complete ✅
 
 ## **DESCRIPTION**
 
-strace traces a prgram in real time and displays all of the system calls it executes in their order of appearance.<br>
+ftrace traces a prgram in real time and displays all of the system calls it executes in their order of appearance.<br>
 Develop an alternative to strace that implementing the following options:<br>
 
  • -p: force a specific PID instead of executing a command.<br>
@@ -36,8 +36,12 @@ Develop an alternative to strace that implementing the following options:<br>
 ```shell
 # Build
 $ make re
+
+# Bonus
+$ ./script/syscall_table.py
+
 # Run
-$ ./strace -s /bin/ls
+$ ./ftrace -s /bin/ls | grep -v "function unknown"
 ```
 
 <div id='contacts'/>
@@ -45,6 +49,7 @@ $ ./strace -s /bin/ls
 ## **CONTACTS**
 
 [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
+[![GitHub awisemanoncesaid](https://img.shields.io/github/followers/awisemanoncesaid?label=awisemanoncesaid&style=social)](https://github.com/awisemanoncesaid)
 [![GitHub Martinouaiouaiouai](https://img.shields.io/github/followers/Martinouaiouaiouai?label=Martinouaiouaiouai&style=social)](https://github.com/Martinouaiouaiouai)
 
 ---

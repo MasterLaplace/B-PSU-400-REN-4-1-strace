@@ -65,3 +65,9 @@ vosk*
 perso
 vgcore.*
 *.data
+.Test
+ftrace
+*.yxy
+*.log
+*.txt
+test

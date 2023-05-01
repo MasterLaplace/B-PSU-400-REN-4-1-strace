@@ -5,7 +5,7 @@
 ** core
 */
 
-#include "strace.h"
+#include "ftrace.h"
 
 int main(int ac, char **av)
 {

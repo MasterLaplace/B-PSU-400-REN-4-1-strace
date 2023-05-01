@@ -5,7 +5,7 @@
 ** loop
 */
 
-#include "strace.h"
+#include "ftrace.h"
 
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child);
 static void print_detail(regs_t regs, rusage_t rusage, int *status, int child);
@@ -37,14 +37,16 @@ static const void (*data_type[])(regs_t, int, int) = {
  */
 static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
 {
-    typeof(8ULL) i = regs.rax;
-
-    printf("%s(", table[i].name);
-    for (int j = 0; j < table[i].nargs; j++) {
-        printf("%s", (j != 0) ? ", " : "");
-        printf("%#llx", get_register(regs, j));
+    for (register unsigned int i = 0; table[i].num != -1; i++) {
+        if (regs.rax != table[i].num)
+            continue;
+        printf("Syscall %s(", table[i].name);
+        for (unsigned int j = 0; j < table[i].nargs; j++) {
+            printf("%s", (j != 0) ? ", " : "");
+            printf("%#llx", get_register(regs, j));
+        }
+        break;
     }
-
     ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
     wait4(child, status, 0, &rusage);
 
@@ -63,19 +65,22 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
 static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
 {
     setbuf(stdout, NULL);
-    typeof(8ULL) i = regs.rax;
-
-    printf("%s(", table[i].name, table[i].nargs);
-    for (int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
-        printf("%s", (j != 0) ? ", " : "");
-        data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
+    for (register unsigned int i = 0; table[i].num != -1; i++) {
+        if (regs.rax != table[i].num)
+            continue;
+        printf("Syscall %s(", table[i].name, table[i].nargs);
+        for (unsigned int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
+            printf("%s", (j != 0) ? ", " : "");
+            data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
+        }
+        ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
+        wait4(child, status, 0, &rusage);
+        ptrace(PTRACE_GETREGS, child, NULL, &regs);
+        printf(")\t= ");
+        data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
+        printf("\n");
+        break;
     }
-    ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
-    wait4(child, status, 0, &rusage);
-    ptrace(PTRACE_GETREGS, child, NULL, &regs);
-    printf(")\t= ");
-    data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
-    printf("\n");
 }
 
 /**
@@ -89,18 +94,22 @@ void loop(bool detail, pid_t pid, int *status)
 {
     regs_t regs;
     rusage_t rusage;
+    link_t *stack = NULL;
 
     while (true) {
         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
         wait4(pid, status, 0, &rusage);
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-        long rip = ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
+        uint16_t rip = 0xffff & ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
 
-        if ((rip & 0xffff) == 0x050f)
+        handle_signal(pid);
+        handle_opcode(regs, rip, pid, &stack);
+        if (rip == 0x050f || rip == 0x80cd)
             func[detail](regs, rusage, status, pid);
         if (WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;
         }
     }
+    delete_all_map(stack);
 }
