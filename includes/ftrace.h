@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** strace
+** ftrace
 ** File description:
 ** syscalls table
 */
@@ -618,11 +618,6 @@ typedef struct maps_s {
     char *function_name;
     size_t len;
 } maps_t;
-
-// typedef struct __attribute__((packed)) call_s {
-//     unsigned opcode: 8;
-//     unsigned rel32: 32;
-// } call_t;
 
 void stock_maps(link_t **link, char *map, uint64_t rip);
 void print_map(link_t *map_list);
