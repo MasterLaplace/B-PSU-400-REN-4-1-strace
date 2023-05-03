@@ -51,7 +51,7 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
     wait4(child, status, 0, &rusage);
 
     ptrace(PTRACE_GETREGS, child, NULL, &regs);
-    printf(")\t= %#llx\n", regs.rax);
+    printf(") = %#llx\n", regs.rax);
 }
 
 /**
@@ -76,7 +76,7 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
         ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         wait4(child, status, 0, &rusage);
         ptrace(PTRACE_GETREGS, child, NULL, &regs);
-        printf(")\t= ");
+        printf(") = ");
         data_type[(TYPE < 9 && TYPE > 0) ? TYPE : 3](regs, child, 7);
         printf("\n");
         break;

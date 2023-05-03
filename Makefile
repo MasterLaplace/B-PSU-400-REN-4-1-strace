@@ -67,7 +67,7 @@ lib:
 # DEBUG
 
 
-debug:	CFLAGS += -g3
+debug:	CFLAGS += -g3 -ggdb -pg
 debug:	fclean all
 
 
