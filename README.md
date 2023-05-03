@@ -1,6 +1,9 @@
-# ME : B-PSU-400-REN-4-1-ftrace<br><br><p align="center">FTRACE</p>
+# ME : B-PSU-400-ftrace<br><br><p align="center">FTRACE</p>
 
 <p align="center">
+  <a href="https://github.com/MasterLaplace/B-PSU-400-ftrace/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge" alt="License: MIT">
+  </a>
   <a>
     <img src="https://img.shields.io/badge/C-11-blue?style=for-the-badge" alt="C: 11">
   </a>
@@ -12,15 +15,16 @@
 Status: complete ✅
 
 
-## Table of Contents
+## :placard: Table of Contents
 - [Description](#description)
 - [Running](#running)
+- [License](#license)
 - [Contacts](#contacts)
 
 
 <div id='description'/>
 
-## **DESCRIPTION**
+## :pencil: **DESCRIPTION**
 
 ftrace traces a program in real time and displays all of the system calls it executes in their order of appearance.<br>
 Develop an alternative to strace that implementing the following options:<br>
@@ -31,7 +35,7 @@ Develop an alternative to strace that implementing the following options:<br>
 
 <div id='running'/>
 
-## **RUNNING**
+## :truck: **RUNNING**
 
 ```shell
 # Build
@@ -44,9 +48,19 @@ $ ./script/syscall_table.py
 $ ./ftrace -s ftrace -h
 ```
 
+
+<div id='license'/>
+
+## :scroll: **LICENSE**
+
+This project is licensed under the terms of the [MIT License](https://github.com/MasterLaplace/B-PSU-400-ftrace/blob/main/LICENSE).
+
+Copyright © 2022-2023 [Master_Laplace](https://github.com/MasterLaplace)
+
+
 <div id='contacts'/>
 
-## **CONTACTS**
+## :mailbox_with_mail: **CONTACTS**
 
 [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
 [![GitHub awisemanoncesaid](https://img.shields.io/github/followers/awisemanoncesaid?label=awisemanoncesaid&style=social)](https://github.com/awisemanoncesaid)

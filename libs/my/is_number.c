@@ -1,16 +1,16 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** is_number
 */
 
-#include "lib.h"
+#include <ctype.h>
 
-bool is_number(const char *str)
+_Bool is_number(const char *str)
 {
     for (unsigned int i = 0; str[i]; i++)
         if (!isdigit(str[i]))
-            return false;
-    return true;
+            return ((_Bool)+0u);
+    return ((_Bool)+1u);
 }

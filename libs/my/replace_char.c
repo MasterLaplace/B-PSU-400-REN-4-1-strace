@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** replace_char
 */
 
-#include "lib.h"
+#include <string.h>
 
 void replace_char(char *str, char orig, char rep)
 {

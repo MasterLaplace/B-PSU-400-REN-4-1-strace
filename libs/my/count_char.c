@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** count_char
 */
 
-#include "lib.h"
+#include <stddef.h>
 
 size_t count_char(char const *str, char c)
 {

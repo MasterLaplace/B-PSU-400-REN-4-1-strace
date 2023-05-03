@@ -1,11 +1,12 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** strcat
 */
 
-#include "lib.h"
+#include <string.h>
+#include <stdlib.h>
 
 char *my_strcat(char const *dest, char const *src)
 {

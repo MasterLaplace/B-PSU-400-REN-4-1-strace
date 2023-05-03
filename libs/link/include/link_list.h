@@ -1,12 +1,13 @@
 /*
 ** EPITECH PROJECT, 2023
-** Hub
+** Laplace Library v1.0.0
 ** File description:
 ** link
 */
 
 #ifndef LINK_H_
     #define LINK_H_
+    #define LIB_LINK_VERSION "1.0.0"
     #include <stddef.h>
     #include <stdlib.h>
     #include <stdbool.h>

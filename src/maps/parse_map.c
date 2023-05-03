@@ -46,7 +46,7 @@ static void stock_value(link_t **link, char *line, uint64_t rip)
         free(maillont);
     } else
         free(maillont);
-    my_two_free(tmp);
+    two_free(tmp);
 }
 
 /**

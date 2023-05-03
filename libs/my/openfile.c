@@ -1,11 +1,12 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** openfile
 */
 
-#include "lib.h"
+#include <fcntl.h>
+#include <unistd.h>
 #include <stdio.h>
 
 int open_file(char const *filepath, int oflag)

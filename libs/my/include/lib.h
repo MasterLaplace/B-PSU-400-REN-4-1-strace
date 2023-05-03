@@ -1,23 +1,15 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** lib
 */
 
 #ifndef LIB_H_
     #define LIB_H_
-    #include <ctype.h>
+    #define LIB_MY_VERSION "1.0.0"
     #include <stdbool.h>
     #include <stddef.h>
-    #include <string.h>
-    #include <stdlib.h>
-    #include <fcntl.h>
-    #include <sys/resource.h>
-    #include <signal.h>
-    #include <sys/types.h>
-    #include <fcntl.h>
-    #include <unistd.h>
 
 
 /**
@@ -46,6 +38,14 @@ int check_endianness(void);
 size_t count_char(char const *str, char c);
 
 /**
+ * @brief Get the number in a string
+ *
+ * @param str  String to get the number from
+ * @return int  Number
+ */
+int getnbr(char const *str);
+
+/**
  * @brief Check if a string is a number
  *
  * @param str  String to check
@@ -59,7 +59,7 @@ bool is_number(const char *str);
  *
  * @param tab  the array of string
  */
-void my_two_free(char **tab);
+void two_free(char **tab);
 
 /**
  * @brief Check if a string is a number

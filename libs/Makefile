@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2023
-## B-PSU-400-REN-4-1-ftrace-martin.boucault
+## Laplace Library v1.0.0
 ## File description:
 ## Makefile
 ##
@@ -39,7 +39,7 @@ fclean:	clean
 
 re:	fclean all
 
-debug:	CFLAGS += -g3
+debug:	CFLAGS += -g3 -ggdb -pg
 debug:	re
 
 %.o: %.c

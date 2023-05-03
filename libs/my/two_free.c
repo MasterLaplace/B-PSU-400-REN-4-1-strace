@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
-** my_two_free
+** two_free
 */
 
-#include "lib.h"
+#include <stdlib.h>
 
-void my_two_free(char **tab)
+void two_free(char **tab)
 {
     for (unsigned int i = 0; tab[i]; i++)
         free(tab[i]);

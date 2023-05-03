@@ -1,11 +1,9 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-NWP-400-REN-4-1-myteams-mathys.thevenot
+** Laplace Library v1.0.0
 ** File description:
 ** char_in_list
 */
-
-#include "lib.h"
 
 int char_in_list(char c, char *list)
 {
