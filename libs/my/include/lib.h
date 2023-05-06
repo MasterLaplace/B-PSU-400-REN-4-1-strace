@@ -11,7 +11,6 @@
     #include <stdbool.h>
     #include <stddef.h>
 
-
 /**
  * @brief Check if a char is in a list
  *

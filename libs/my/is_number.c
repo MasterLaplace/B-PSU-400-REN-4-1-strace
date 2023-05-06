@@ -9,7 +9,9 @@
 
 _Bool is_number(const char *str)
 {
-    for (unsigned int i = 0; str[i]; i++)
+    if (!str || !*str)
+        return ((_Bool)+0u);
+    for (unsigned int i = (*str == '-'); str[i]; i++)
         if (!isdigit(str[i]))
             return ((_Bool)+0u);
     return ((_Bool)+1u);

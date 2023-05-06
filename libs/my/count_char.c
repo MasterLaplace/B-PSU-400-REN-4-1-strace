@@ -11,6 +11,8 @@ size_t count_char(char const *str, char c)
 {
     size_t nb = 0;
 
+    if (!str)
+        return 0;
     for (; str[nb]; (str[nb] == c) ? nb++ : *str++);
     return nb;
 }

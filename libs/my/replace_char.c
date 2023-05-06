@@ -11,6 +11,8 @@ void replace_char(char *str, char orig, char rep)
 {
     char *ix = str;
 
+    if (!str || !*str || !orig)
+        return;
     for (unsigned int n = 0; (ix = strchr(ix, orig)); n++) {
         *ix++ = rep;
     }

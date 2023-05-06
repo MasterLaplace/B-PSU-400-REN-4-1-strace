@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2023
-## B-PSU-400-REN-4-1-strace-martin.boucault
+## B-PSU-400-ftrace
 ## File description:
 ## Makefile
 ##
@@ -11,7 +11,7 @@
 
 
 NO_PRINT 	= 	--no-print-directory
-OPTI		=	-Ofast -march=native
+OPTI		=	-Ofast -march=native -flto -pipe
 CC 			= 	gcc
 NAME 		=	ftrace
 CFLAGS		=	$(OPTI) -I ./includes
@@ -90,14 +90,9 @@ OBJ_TEST = $(SRC_TEST:.S=.o)
 build_test: $(OBJ_TEST)
 	@gcc $(OBJ_TEST) -o $(NAME_TEST) -fno-builtin
 
-
-OK = src/utils.c
-OBJ_OK = $(OK:.c=.o)
-
-tests_run: re $(OBJ_TESTS)
-	@gcc -o unit_tests $(OBJ_TESTS) $(OBJ_OK) $(CFLAGS) --coverage -lcriterion
-	@./unit_tests
-	@$(RM) unit_tests
+tests_run:	CFLAGS += --coverage -lcriterion
+tests_run:
+	@make tests_run -C ./libs $(NO_PRINT)
 
 coverage:
 	@gcovr --exclude tests/

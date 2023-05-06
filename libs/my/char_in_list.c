@@ -7,6 +7,8 @@
 
 int char_in_list(char c, char *list)
 {
+    if (!list)
+        return (-1);
     for (unsigned int i = 0; list[i]; ++i) {
         if (c == list[i])
             return i;

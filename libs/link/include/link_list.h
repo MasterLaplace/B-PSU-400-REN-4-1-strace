@@ -12,6 +12,13 @@
     #include <stdlib.h>
     #include <stdbool.h>
 
+/**
+ * @brief It represents a link.
+ *
+ * @param obj The object of the link.
+ * @param next The next link.
+ * @param prev The previous link.
+ */
 typedef struct link_s {
     void *obj;
     struct link_s *next;

@@ -7,6 +7,8 @@
   <a>
     <img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge" alt="OS: Linux">
   </a>
+  <a href="https://github.com/MasterLaplace/B-PSU-400-ftrace/actions/workflows/build_libs.yml/badge.svg" alt="Build Status">
+  </a>
 </p>
 
 Status: complete ✅
