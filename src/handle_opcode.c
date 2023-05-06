@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-PSU-400-REN-4-1-ftrace-martin.boucault
+** B-PSU-400-ftrace
 ** File description:
 ** handle_opcode
 */
@@ -99,7 +99,7 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
             goto end;
         maps_t *map = (maps_t *)(*stack)->prev->obj;
         uint64_t offset = calculate_offset(pid, rip);
-        if (!(map->function_name = get_function_name(map->pathname, offset))) {
+        if (!map->pathname || !(map->function_name = get_function_name(map->pathname, offset))) {
             list_remove(stack, (*stack)->prev, &free_map);
             goto end;
         }

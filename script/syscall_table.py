@@ -31,9 +31,10 @@ Start_of_file = """/*
     #define SYSCALL_H_
     #define TYPE table[i].rettype
     #define ARG table[i].arg[j]
+    #define PACKED __attribute__((packed))
     #include <stddef.h>
 
-typedef struct {
+typedef struct PACKED {
     int num;
     const char *name;
     unsigned int nargs;
@@ -42,7 +43,7 @@ typedef struct {
 } syscall_t;
 
 static syscall_t table[] = {
-""" % (datetime.now().year, re.search(r'B-PSU-400-REN-4-1-(.*?)-', os.getcwd().split('/')[-1]).group(1))
+""" % (datetime.now().year, re.search(r'B-PSU-400-(.*?)', os.getcwd().split('/')[-1]).group(1))
 
 
 SYSCALL_TEMPLATE = "    {%d, \"%s\", %d, %s, %s},"

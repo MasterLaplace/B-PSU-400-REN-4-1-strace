@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** Ftrace
+** B-PSU-400-ftrace
 ** File description:
-** yes
+** get_function_name
 */
 
 #include <fcntl.h>

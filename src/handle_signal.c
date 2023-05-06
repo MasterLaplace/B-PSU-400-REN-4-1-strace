@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-PSU-400-REN-4-1-ftrace-martin.boucault
+** B-PSU-400-ftrace
 ** File description:
 ** handle_signal
 */
@@ -18,7 +18,6 @@ static const signal_t SIGNALS[39] = {
     {SIGABRT, "SIGABRT"},
     {SIGIOT, "SIGIOT"},
     {SIGBUS, "SIGBUS"},
-    // {SIGEMT, "SIGEMT"},
     {SIGFPE, "SIGFPE"},
     {SIGKILL, "SIGKILL"},
     {SIGUSR1, "SIGUSR1"},
@@ -44,10 +43,7 @@ static const signal_t SIGNALS[39] = {
     {SIGIO, "SIGIO"},
     {SIGPOLL, "SIGPOLL"},
     {SIGPWR, "SIGPWR"},
-    // {SIGINFO, "SIGINFO"},
-    // {SIGLOST, "SIGLOST"},
     {SIGSYS, "SIGSYS"},
-    // {SIGUNUSED, "SIGUNUSED"},
     {0, NULL}
 };
 

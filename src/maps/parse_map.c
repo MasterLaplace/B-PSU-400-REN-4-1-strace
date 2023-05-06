@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-PSU-400-REN-4-1-ftrace-martin.boucault
+** B-PSU-400-ftrace
 ** File description:
 ** parse_map
 */
