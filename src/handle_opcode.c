@@ -36,8 +36,8 @@ static const uint16_t ret_opcode[] = {
 static const uint64_t calls[] = {
     0xe8,     // CALL rel32
     0x9a,     // CALL ptr16:16
-    0xff,   // CALL r/m16 / 2
-    0xff,   // CALL m16:16 / 3
+    0xff,     // CALL r/m16 / 2
+    0xff,     // CALL m16:16 / 3
     0x80cd,   // CALL imm16
     0x050f,   // CALL func
     0xc3,     // RET
@@ -47,14 +47,14 @@ static const uint64_t calls[] = {
     0xe8,     // CALL rel16
     0x00ff,   // CALL (reg16)
     0xff41,   // CALL (reg32)
-    0xff,   // CALL m16:32 / 5
-    0xff,   // CALL m16:64 / 6
-    0x0       // End of list marker
+    0xff,     // CALL m16:32 / 5
+    0xff,     // CALL m16:64 / 6
+    0x0       // End Of List
 };
 
-static bool is_enter_calls(uint16_t rip)
+static inline bool is_enter_calls(uint16_t rip)
 {
-    for (int i = 0; calls_opcode[i] != 0; i++) {
+    for (unsigned i = 0; calls_opcode[i] != 0; i++) {
         if (rip == calls_opcode[i])
             return true;
         if ((0xFF & rip) == (0xFF & calls_opcode[i])
@@ -64,9 +64,9 @@ static bool is_enter_calls(uint16_t rip)
     return false;
 }
 
-static bool is_ret_calls(uint16_t rip)
+static inline bool is_ret_calls(uint16_t rip)
 {
-    for (int i = 0; ret_opcode[i] != 0; i++) {
+    for (unsigned i = 0; ret_opcode[i] != 0; i++) {
         if (rip == ret_opcode[i])
             return true;
         if ((0xFF & rip) == (0xFF & ret_opcode[i])
@@ -76,20 +76,20 @@ static bool is_ret_calls(uint16_t rip)
     return false;
 }
 
-static char *get_maps(pid_t pid)
+static inline char *get_maps(pid_t pid)
 {
     char command[25];
     sprintf(command, "cat /proc/%d/maps", pid);
 
     char str[BUFFER_SIZE] = {0};
     FILE *fp = popen(command, "r");
-    fread(str, sizeof(char), BUFFER_SIZE, fp);
+    if (!fread(str, sizeof(char), BUFFER_SIZE, fp))
+        return NULL;
     fclose(fp);
     return strdup(str);
 }
 
-static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
-    link_t **stack)
+static inline void handle_in_stack(bool is_call, uint64_t rip, pid_t pid, link_t **stack)
 {
     char *str = get_maps(pid);
 
@@ -103,7 +103,7 @@ static void handle_in_stack(bool is_call, uint64_t rip, pid_t pid,
             list_remove(stack, (*stack)->prev, &free_map);
             goto end;
         }
-        printf("Entering function %s at 0x%llx\n", map->function_name, rip);
+        printf("Entering function %s at 0x%lx\n", map->function_name, rip);
     } else {
         if (!(*stack))
             goto end;

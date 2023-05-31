@@ -38,13 +38,13 @@ void appstart_link(link_t **list, link_t *link);
 void do_list(link_t *list, void (*func)(void *));
 
 //* It duplicates the list.
-link_t *dup_list(link_t *list, size_t __size);
+link_t *dup_list(link_t *list, unsigned __size);
 
 //* It checks if the link is null.
 bool is_null_link(link_t **link);
 
 //* It returns the size of the link.
-size_t len_link(link_t *link);
+unsigned len_link(link_t *link);
 
 //* It prints the list.
 void print_list(link_t *list, void (*print)(void *));

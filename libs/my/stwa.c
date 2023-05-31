@@ -8,10 +8,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-static size_t count_words(char *str, const char *delim)
+static unsigned count_words(char *str, const char *delim)
 {
     char *str_dup = NULL;
-    size_t count = 0;
+    unsigned count = 0;
 
     if (!str)
         return (0);
@@ -25,7 +25,7 @@ static size_t count_words(char *str, const char *delim)
 
 char **stwa(char *str, const char *delim)
 {
-    size_t len = count_words(str, delim);
+    unsigned len = count_words(str, delim);
     char **words = malloc(sizeof(char *) * (len + 1));
     char *str_dup = NULL;
 
@@ -35,7 +35,7 @@ char **stwa(char *str, const char *delim)
     }
     str_dup = strdup(str);
     words[0] = strdup(strtok(str_dup, delim));
-    for (size_t i = 1; i < len; ++i)
+    for (unsigned i = 1; i < len; ++i)
         words[i] = strdup(strtok(NULL, delim));
     words[len] = NULL;
     free(str_dup);

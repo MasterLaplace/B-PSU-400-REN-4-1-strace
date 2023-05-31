@@ -11,7 +11,7 @@ void two_free(char **tab)
 {
     if (!tab)
         return;
-    for (unsigned int i = 0; tab[i]; i++) {
+    for (unsigned i = 0; tab[i]; i++) {
         free(tab[i]);
         tab[i] = NULL;
     }

@@ -16,9 +16,9 @@
  *
  * @param c  Char to check
  * @param list  List of char
- * @return int  Index of the char in the list, -1 if not found
+ * @return unsigned  Index of the char in the list, -1 if not found
  */
-int char_in_list(char c, char *list);
+unsigned char_in_list(char c, char *list);
 
 /**
  * @brief Check if the system is little endian
@@ -32,17 +32,17 @@ int check_endianness(void);
  *
  * @param str  String to count
  * @param c  Char to count
- * @return size_t  Number of char in the string
+ * @return unsigned  Number of char in the string
  */
-size_t count_char(char const *str, char c);
+unsigned count_char(char const *str, char c);
 
 /**
  * @brief Get the number in a string
  *
  * @param str  String to get the number from
- * @return int  Number
+ * @return unsigned  Number
  */
-int getnbr(char const *str);
+unsigned getnbr(char const *str);
 
 /**
  * @brief Check if a string is a number
@@ -67,7 +67,7 @@ void two_free(char **tab);
  * @return true  if the string is a number
  * @return false  if the string is not a number
  */
-int open_file(char const *filepath, int oflag);
+unsigned open_file(char const *filepath, unsigned oflag);
 
 /**
  * @brief Replace a char in a string by another char

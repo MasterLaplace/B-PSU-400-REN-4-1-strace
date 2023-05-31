@@ -149,7 +149,7 @@
     #include "lib.h"// ../../libs/link/include/
     #include "link_list.h"
 
-typedef unsigned int sizint;
+typedef unsigned sizint;
 typedef unsigned char byte;
 typedef struct user_regs_struct regs_t;
 typedef struct rusage rusage_t;
@@ -160,7 +160,7 @@ typedef __uint32_t uint32_t;
 typedef __uint64_t uint64_t;
 
 typedef struct {
-    int pid;
+    unsigned pid;
     char *program;
     char **av;
     bool is_not_detailed;
@@ -173,11 +173,11 @@ typedef struct {
 } command_t;
 
 typedef struct {
-    int num;
+    unsigned num;
     const char *name;
-    unsigned int nargs;
-    unsigned int rettype;
-    unsigned int arg[6];
+    unsigned nargs;
+    unsigned rettype;
+    unsigned arg[6];
 } syscall_t;
 
 static syscall_t table[360] = {
@@ -582,14 +582,14 @@ static syscall_t table[360] = {
 };
 
 
-int handle_command(int ac, char **av);
-void loop(bool detail, pid_t pid, int *status);
-typeof(8ULL) get_register(regs_t regs, int j);
+unsigned handle_command(unsigned ac, char **av);
+void loop(bool detail, pid_t pid, unsigned *status);
+typeof(8ULL) get_register(regs_t regs, unsigned j);
 char *get_mode_type(dev_t mode);
-void print_number(regs_t regs, int child, int j);
-void print_string(regs_t registers, int child, int register_index);
-void print_pointer(regs_t regs, int child, int j);
-void print_struct(regs_t registers, int child, int register_index);
+void print_number(regs_t regs, pid_t child, unsigned j);
+void print_string(regs_t registers, pid_t child, unsigned register_index);
+void print_pointer(regs_t regs, pid_t child, unsigned j);
+void print_struct(regs_t registers, pid_t child, unsigned register_index);
 
 /**
  * @brief call structure
@@ -602,7 +602,7 @@ void print_struct(regs_t registers, int child, int register_index);
  * @param imm imm of the call (0x00)
  */
 typedef struct signal_s {
-    int num;
+    unsigned num;
     char *name;
 } signal_t;
 
@@ -616,7 +616,7 @@ typedef struct maps_s {
     char *pathname;
     long rip;
     char *function_name;
-    size_t len;
+    unsigned len;
 } maps_t;
 
 void stock_maps(link_t **link, char *map, uint64_t rip);

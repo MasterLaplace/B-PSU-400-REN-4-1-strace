@@ -24,11 +24,11 @@ static const command_t command[4] = {
  * @brief Check if the string is a number.
  *
  * @param str  The string to check.
- * @return int  The number if it is a number, 0 otherwise.
+ * @return unsigned  The number if it is a number, 0 otherwise.
  */
-static int is_num(char *str)
+static inline unsigned is_num(char *str)
 {
-    for (unsigned int i = 0; str[i]; i++)
+    for (unsigned i = 0; str[i]; i++)
         if (!isdigit(str[i]))
             return 0;
     return atoi(str);
@@ -39,17 +39,17 @@ static int is_num(char *str)
  *
  * @param data  The data containing the program name.
  */
-static void print_usage(data_t data)
+static inline void print_usage(data_t data)
 {
     printf("USAGE: ftrace [-h] [-s] [-p pid program] program [args ...]\n");
 }
 
 /**
- * @brief Execute the program and print the details.
+ * @brief Execute the program and prunsigned the details.
  *
  * @param data  The data containing the program name.
  */
-static void exec_detail(data_t data)
+static inline void exec_detail(data_t data)
 {
     pid_t child;
 
@@ -57,7 +57,7 @@ static void exec_detail(data_t data)
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
         execve(data.program, data.av, NULL);
     } else {
-        int status;
+        unsigned status;
 
         wait4(child, &status, 0, NULL);
         loop(data.is_not_detailed, child, &status);
@@ -69,10 +69,10 @@ static void exec_detail(data_t data)
  *
  * @param data  The data containing the pid and the program name.
  */
-static void set_process(data_t data)
+static inline void set_process(data_t data)
 {
     if (data.pid != 0) {
-        int status;
+        unsigned status;
 
         ptrace(PTRACE_ATTACH, data.pid, NULL, NULL);
         wait4(data.pid, &status, 0, NULL);
@@ -87,11 +87,11 @@ static void set_process(data_t data)
  *
  * @param ac  The number of arguments.
  * @param av  The arguments.
- * @return int  0 if the command was executed, 1 otherwise.
+ * @return unsigned  0 if the command was executed, 1 otherwise.
  */
-int handle_command(int ac, char **av)
+unsigned handle_command(unsigned ac, char **av)
 {
-    for (int i = 0; ac >= 2 && command[i].key != NULL; ++i) {
+    for (unsigned i = 0; ac >= 2 && command[i].key != NULL; ++i) {
         if (strcmp(command[i].key, av[1]) != 0)
             continue;
         auto data = (data_t) { 0, av[2], &av[2], true };

@@ -7,7 +7,7 @@
 
 #include "ftrace.h"
 
-int main(int ac, char **av)
+unsigned main(unsigned ac, char **av)
 {
     if (handle_command(ac, av))
         return (84);

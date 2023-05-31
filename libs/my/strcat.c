@@ -11,8 +11,8 @@
 char *my_strcat(char const *dest, char const *src)
 {
     char *tmp = malloc(sizeof(char) * (strlen(dest) + strlen(src) + 1));
-    size_t i = 0;
-    size_t e = 0;
+    unsigned i = 0;
+    unsigned e = 0;
 
     if (!tmp)
         return NULL;

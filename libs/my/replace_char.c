@@ -13,7 +13,7 @@ void replace_char(char *str, char orig, char rep)
 
     if (!str || !*str || !orig)
         return;
-    for (unsigned int n = 0; (ix = strchr(ix, orig)); n++) {
+    for (unsigned n = 0; (ix = strchr(ix, orig)); n++) {
         *ix++ = rep;
     }
 }

@@ -12,8 +12,8 @@
 Test(unit_test, get_register)
 {
     regs_t regs = {0};
-    int j = 0;
-    int expected = 0;
+    unsigned j = 0;
+    unsigned expected = 0;
     typeof(8ULL) actual = 0;
 
     actual = get_register(regs, j);

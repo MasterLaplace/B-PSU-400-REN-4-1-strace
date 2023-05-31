@@ -7,7 +7,7 @@
 
 #include <criterion/criterion.h>
 
-int getnbr(char const *str);
+unsigned getnbr(char const *str);
 
 Test(getnbr_01, should_return_true)
 {

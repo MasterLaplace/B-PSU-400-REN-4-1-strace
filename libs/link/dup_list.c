@@ -8,7 +8,7 @@
 #include "link_list.h"
 #include <string.h>
 
-link_t *dup_list(link_t *list, size_t __size)
+link_t *dup_list(link_t *list, unsigned __size)
 {
     link_t *new = NULL;
     link_t *actual = list;

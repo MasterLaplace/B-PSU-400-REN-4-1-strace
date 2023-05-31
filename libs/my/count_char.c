@@ -7,9 +7,9 @@
 
 #include <stddef.h>
 
-size_t count_char(char const *str, char c)
+unsigned count_char(char const *str, char c)
 {
-    size_t nb = 0;
+    unsigned nb = 0;
 
     if (!str)
         return 0;

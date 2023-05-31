@@ -8,7 +8,7 @@
 #include <criterion/criterion.h>
 #include <stddef.h>
 
-size_t count_char(char const *str, char c);
+unsigned count_char(char const *str, char c);
 
 Test(count_char_01, should_return_true)
 {

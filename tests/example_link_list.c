@@ -24,7 +24,7 @@ void init_wave()
 {
     wave_list = NULL;
 
-    for (int i = 0; i < NB_WAVE; i++) {
+    for (unsigned i = 0; i < NB_WAVE; i++) {
         wave_t *wave = malloc(sizeof(wave_t));
         wave->wavelength = 0;
         wave->wave_speed = 0;
@@ -93,7 +93,7 @@ void print_wave()
     } while (wave_list && actual != wave_list);
 }
 
-int main(void)
+unsigned main(void)
 {
     init_wave();
     print_wave();

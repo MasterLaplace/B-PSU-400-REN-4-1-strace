@@ -7,15 +7,15 @@
 
 #include "ftrace.h"
 
-static void print_simple(regs_t regs, rusage_t rusage, int *status, int child);
-static void print_detail(regs_t regs, rusage_t rusage, int *status, int child);
+static void print_simple(regs_t, rusage_t, unsigned *, pid_t);
+static void print_detail(regs_t, rusage_t, unsigned *, pid_t);
 
-static const void (*func[])(regs_t, rusage_t, int *, int) = {
+static const void (*func[])(regs_t, rusage_t, unsigned *, pid_t) = {
     &print_simple,
     &print_detail
 };
 
-static const void (*data_type[])(regs_t, int, int) = {
+static const void (*data_type[])(regs_t, pid_t, unsigned) = {
     NULL,
     &print_number,
     &print_string,
@@ -35,13 +35,13 @@ static const void (*data_type[])(regs_t, int, int) = {
  * @param status  status
  * @param child  child
  */
-static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
+static inline void print_simple(regs_t regs, rusage_t rusage, unsigned *status, pid_t child)
 {
-    for (register unsigned int i = 0; table[i].num != -1; i++) {
+    for (register unsigned i = 0; table[i].num != -1; i++) {
         if (regs.rax != table[i].num)
             continue;
         printf("Syscall %s(", table[i].name);
-        for (unsigned int j = 0; j < table[i].nargs; j++) {
+        for (unsigned j = 0; j < table[i].nargs; j++) {
             printf("%s", (j != 0) ? ", " : "");
             printf("%#llx", get_register(regs, j));
         }
@@ -62,14 +62,14 @@ static void print_simple(regs_t regs, rusage_t rusage, int *status, int child)
  * @param status  status
  * @param child  child
  */
-static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
+static inline void print_detail(regs_t regs, rusage_t rusage, unsigned *status, pid_t child)
 {
     setbuf(stdout, NULL);
-    for (register unsigned int i = 0; table[i].num != -1; i++) {
+    for (register unsigned i = 0; table[i].num != -1; i++) {
         if (regs.rax != table[i].num)
             continue;
-        printf("Syscall %s(", table[i].name, table[i].nargs);
-        for (unsigned int j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
+        printf("Syscall %s(", table[i].name);
+        for (unsigned j = 0; table[i].nargs > 0 && j < table[i].nargs; j++) {
             printf("%s", (j != 0) ? ", " : "");
             data_type[(ARG < 9 && ARG > 0) ? ARG : 3](regs, child, j);
         }
@@ -90,7 +90,7 @@ static void print_detail(regs_t regs, rusage_t rusage, int *status, int child)
  * @param pid  pid
  * @param status  status
  */
-void loop(bool detail, pid_t pid, int *status)
+void loop(bool detail, pid_t pid, unsigned *status)
 {
     regs_t regs;
     rusage_t rusage;

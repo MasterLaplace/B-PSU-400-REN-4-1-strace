@@ -11,7 +11,7 @@
 #include <string.h>
 
 
-void init_maillont(maps_t *maillont, char **tmp, size_t len_tmp, uint64_t rip)
+void init_maillont(maps_t *maillont, char **tmp, unsigned len_tmp, uint64_t rip)
 {
     maillont->rip = rip;
     maillont->perms = strdup(tmp[1]);
@@ -34,7 +34,7 @@ static void stock_value(link_t **link, char *line, uint64_t rip)
 {
     char **tmp = stwa(line, " \t");
     maps_t *maillont = malloc(sizeof(maps_t));
-    size_t len_tmp = 0;
+    unsigned len_tmp = 0;
 
     for (; tmp[len_tmp]; len_tmp++);
     if (char_in_list('-', tmp[0]) != -1) {
@@ -60,7 +60,7 @@ void stock_maps(link_t **link, char *map, uint64_t rip)
 {
     char **tmp = stwa(map, "\r\n");
 
-    for (size_t i = 0; tmp[i]; i++) {
+    for (unsigned i = 0; tmp[i]; i++) {
         stock_value(link, tmp[i], rip);
         free(tmp[i]);
     }

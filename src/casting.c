@@ -14,7 +14,7 @@
  * @param child  The child process.
  * @param j  The index of the register containing the number.
  */
-void print_number(regs_t regs, int child, int j)
+void print_number(regs_t regs, pid_t child, unsigned j)
 {
     printf("%lld", get_register(regs, j));
 }
@@ -26,10 +26,10 @@ void print_number(regs_t regs, int child, int j)
  * @param child    The child process.
  * @param register_index  The index of the register containing the pointer.
  */
-void print_string(regs_t registers, int child, int register_index)
+void print_string(regs_t registers, pid_t child, unsigned register_index)
 {
     auto string_pointer = get_register(registers, register_index);
-    int c = 0;
+    unsigned c = 0;
     char character = 0;
 
     printf("\"");
@@ -56,7 +56,7 @@ void print_string(regs_t registers, int child, int register_index)
  * @param child  The child process.
  * @param j  The index of the register containing the pointer.
  */
-void print_pointer(regs_t regs, int child, int j)
+void print_pointer(regs_t regs, pid_t child, unsigned j)
 {
     printf("%#llx", get_register(regs, j));
 }
@@ -68,16 +68,16 @@ void print_pointer(regs_t regs, int child, int j)
  * @param child  The child process.
  * @param register_index  The index of the register containing the pointer.
  */
-void print_struct(regs_t registers, int child, int register_index)
+void print_struct(regs_t registers, pid_t child, unsigned register_index)
 {
     auto st_ptr = get_register(registers, register_index);
-    size_t offset = 0;
+    unsigned offset = 0;
 
     offset = offsetof(struct stat, st_mode);
     auto c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);
     if (c == -1)
         return;
-    printf("{st_mode=%s|%#o", get_mode_type(c), c & 07777);
+    printf("{st_mode=%s|%#lo", get_mode_type(c), c & 07777);
 
     offset = offsetof(struct stat, st_size);
     c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);

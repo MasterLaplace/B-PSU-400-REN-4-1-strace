@@ -35,11 +35,11 @@ Start_of_file = """/*
     #include <stddef.h>
 
 typedef struct PACKED {
-    int num;
+    unsigned num;
     const char *name;
-    unsigned int nargs;
-    unsigned int rettype;
-    unsigned int arg[6];
+    unsigned nargs;
+    unsigned rettype;
+    unsigned arg[6];
 } syscall_t;
 
 static syscall_t table[] = {

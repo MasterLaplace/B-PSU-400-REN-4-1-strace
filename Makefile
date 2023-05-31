@@ -18,8 +18,8 @@ CFLAGS		=	$(OPTI) -I ./includes
 CFLAGS 		+=	-L ./libs -lmy -llink
 CFLAGS 		+= -I includes -I ./libs/my/include -I ./libs/link/include
 
-SRC	=	$(wildcard src/*.c) \
-		$(wildcard src/*/*.c)
+SRC_DIR      = src/
+SRC	=	$(shell find $(SRC_DIR) -name '**.c')
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -60,7 +60,7 @@ re: fclean all
 
 lib:
 	@make all -C ./libs $(NO_PRINT)
-	@echo -e $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB !"$(DEFAULT)
 
 
 
@@ -102,3 +102,13 @@ coverage_b:
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+
+
+# MISC
+
+ECHO = /bin/echo -e
+DEFAULT = "\033[00m"
+BOLD = "\e[1m"
+RED = "\e[31m"
+GREEN = "\e[32m"

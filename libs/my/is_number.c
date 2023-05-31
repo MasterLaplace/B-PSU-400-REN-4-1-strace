@@ -11,7 +11,7 @@ _Bool is_number(const char *str)
 {
     if (!str || !*str)
         return ((_Bool)+0u);
-    for (unsigned int i = (*str == '-'); str[i]; i++)
+    for (unsigned i = (*str == '-'); str[i]; i++)
         if (!isdigit(str[i]))
             return ((_Bool)+0u);
     return ((_Bool)+1u);

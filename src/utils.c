@@ -14,7 +14,7 @@
  * @param j The index of the register
  * @return typeof(8ULL) The value of the register
  */
-typeof(8ULL) get_register(regs_t regs, int j) {
+typeof(8ULL) get_register(regs_t regs, unsigned j) {
     switch (j) {
         case 0:
             return regs.rdi;

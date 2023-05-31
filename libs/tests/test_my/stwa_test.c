@@ -24,7 +24,7 @@ Test(stwa_01, should_return_array_of_strings)
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_str_eq(actual[1], expected[1]);
     cr_assert_eq(actual[2], expected[2]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -42,7 +42,7 @@ Test(stwa_02, should_return_array_of_strings)
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_str_eq(actual[1], expected[1]);
     cr_assert_eq(actual[2], expected[2]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -60,7 +60,7 @@ Test(stwa_03, should_return_array_of_strings)
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_str_eq(actual[1], expected[1]);
     cr_assert_eq(actual[2], expected[2]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -78,7 +78,7 @@ Test(stwa_04, should_return_array_of_strings)
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_str_eq(actual[1], expected[1]);
     cr_assert_eq(actual[2], expected[2]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -94,7 +94,7 @@ Test(stwa_05, should_return_array_of_strings)
     char **actual = stwa(str, delim);
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_eq(actual[1], expected[1]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -110,7 +110,7 @@ Test(stwa_06, should_return_array_of_strings)
     char **actual = stwa(str, delim);
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_eq(actual[1], expected[1]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -140,7 +140,7 @@ Test(stwa_08, should_return_array_of_strings)
     cr_assert_str_eq(actual[1], expected[1]);
     cr_assert_str_eq(actual[2], expected[2]);
     cr_assert_eq(actual[3], expected[3]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }
@@ -156,7 +156,7 @@ Test(stwa_09, should_return_array_of_strings)
     char **actual = stwa(str, delim);
     cr_assert_str_eq(actual[0], expected[0]);
     cr_assert_eq(actual[1], expected[1]);
-    for (int i = 0; actual[i]; i++) { free(actual[i]); }
+    for (unsigned i = 0; actual[i]; i++) { free(actual[i]); }
     free(actual);
     free(expected);
 }

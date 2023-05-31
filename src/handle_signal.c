@@ -53,7 +53,7 @@ void handle_signal(pid_t pid)
 
     if (ptrace(PTRACE_GETSIGINFO, pid, NULL, &signal) == -1)
         return;
-    for (int i = 0; SIGNALS[i].num; i++) {
+    for (unsigned i = 0; SIGNALS[i].num; i++) {
         if (signal.si_signo == SIGTRAP) {
             continue;
         }

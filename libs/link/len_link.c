@@ -7,10 +7,10 @@
 
 #include "link_list.h"
 
-size_t len_link(link_t *link)
+unsigned len_link(link_t *link)
 {
     link_t *actual = link;
-    size_t count = 0;
+    unsigned count = 0;
 
     if (!actual)
         return count;

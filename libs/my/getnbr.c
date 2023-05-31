@@ -7,14 +7,14 @@
 
 #include <ctype.h>
 
-int getnbr(char const *str)
+unsigned getnbr(char const *str)
 {
-    int exp = 0;
+    unsigned exp = 0;
 
     if (!str)
         return exp;
 
-    for (unsigned int i = (*str == '-'); isdigit(str[i]); i++)
+    for (unsigned i = (*str == '-'); isdigit(str[i]); i++)
         exp = exp * 10 + str[i] - '0';
     if ((*str == '-'))
         exp *= -1;

@@ -8,12 +8,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void print_number(int i)
+void print_number(unsigned i)
 {
     printf("%d", i);
 }
 
-int main(void)
+unsigned main(void)
 {
     while (1) {
         print_number(42);
