@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 
+void my_free(char **to_free) { free(*to_free); }
+
 void two_free(char **tab)
 {
     if (!tab)

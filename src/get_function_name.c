@@ -30,11 +30,10 @@ static inline char *get_name(void *buf, uint64_t val, Elf64_Shdr *symtab, Elf64_
     char *str = (char *)(buf + strtab->sh_offset);
 
     for (unsigned i = 0; i < symtab->sh_size / sizeof(Elf64_Sym); i++) {
-        if ((Elf64_Addr)val == sym[i].st_value) {
+        if ((Elf64_Addr)val == sym[i].st_value)
             return strdup(str + sym[i].st_name);
-        }
     }
-    return NULL;
+    return (NULL);
 }
 
 /**
@@ -55,7 +54,7 @@ char *get_function_name(const char *bin_name, uint64_t val)
     char *str = (char *)(buf + sections[elf->e_shstrndx].sh_offset);
     Elf64_Shdr *symtab, *strtab;
     for (unsigned i = 0; i < elf->e_shnum; i++) {
-        if (!(sections[i].sh_size))
+        if (!sections[i].sh_size)
             continue;
         if (strcmp(&str[sections[i].sh_name], ".symtab") == 0)
             symtab = (Elf64_Shdr *)&sections[i];

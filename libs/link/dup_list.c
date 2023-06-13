@@ -14,6 +14,8 @@ link_t *dup_list(link_t *list, unsigned __size)
     link_t *actual = list;
     typeof(__size) *tmp = NULL;
 
+    if (!actual)
+        return (NULL);
     do {
         tmp = malloc(__size);
         memcpy(tmp, actual->obj, __size);

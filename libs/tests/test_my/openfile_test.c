@@ -10,11 +10,11 @@
 #include <unistd.h>
 #include <stdio.h>
 
-unsigned open_file(char const *filepath, unsigned oflag);
+int open_file(char const *filepath, unsigned oflag);
 
 Test(open_file_01, open_file_test)
 {
-    unsigned fd = open_file("tests/test_my/.file.txt", O_RDONLY);
+    int fd = open_file("tests/test_my/.file.txt", O_RDONLY);
 
     cr_assert_neq(fd, -1);
     close(fd);

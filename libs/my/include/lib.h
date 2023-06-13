@@ -8,6 +8,7 @@
 #ifndef LIB_H_
     #define LIB_H_
     #define LIB_MY_VERSION "1.0.0"
+    #define auto_clean __attribute__((cleanup(my_free)))
     #include <stdbool.h>
     #include <stddef.h>
 
@@ -16,9 +17,9 @@
  *
  * @param c  Char to check
  * @param list  List of char
- * @return unsigned  Index of the char in the list, -1 if not found
+ * @return int  Index of the char in the list, -1 if not found
  */
-unsigned char_in_list(char c, char *list);
+int char_in_list(char c, char *list);
 
 /**
  * @brief Check if the system is little endian
@@ -59,15 +60,15 @@ bool is_number(const char *str);
  * @param tab  the array of string
  */
 void two_free(char **tab);
+void my_free(char **to_free);
 
 /**
- * @brief Check if a string is a number
+ * @brief Open a file and check if it exists
  *
- * @param str  String to check
- * @return true  if the string is a number
- * @return false  if the string is not a number
+ * @param filepath  Filepath of the file to open
+ * @param oflag  Open flag (O_RDONLY, O_WRONLY, O_RDWR)
  */
-unsigned open_file(char const *filepath, unsigned oflag);
+int open_file(char const *filepath, unsigned oflag);
 
 /**
  * @brief Replace a char in a string by another char

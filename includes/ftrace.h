@@ -129,6 +129,12 @@
     #define auto __auto_type
     #define TYPE table[i].rettype
     #define ARG table[i].arg[j]
+    #define UNUSED __attribute__((unused))
+    #define PACKED __attribute__((packed))
+    #define EXIT_SUCCESS 0
+    #define EXIT_FAILURE 1
+    #define EXIT_PASS 2
+    #define EXIT_QUIT 84
     #define BUFFER_SIZE 4096
     #include <stdlib.h>
     #include <sys/wait.h>
@@ -146,7 +152,7 @@
     #include <stddef.h>
     #include <stdbool.h>
     #include <bits/types.h>
-    #include "lib.h"// ../../libs/link/include/
+    #include "lib.h"
     #include "link_list.h"
 
 typedef unsigned sizint;

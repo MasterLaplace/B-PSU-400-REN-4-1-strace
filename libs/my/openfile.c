@@ -9,9 +9,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-unsigned open_file(char const *filepath, unsigned oflag)
+int open_file(char const *filepath, unsigned oflag)
 {
-    unsigned fd = open(filepath, oflag);
+    int fd = open(filepath, oflag);
 
     if (!filepath)
         return (-1);

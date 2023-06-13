@@ -10,6 +10,6 @@
 unsigned main(unsigned ac, char **av)
 {
     if (handle_command(ac, av))
-        return (84);
-    return (0);
+        return (EXIT_QUIT);
+    return (EXIT_SUCCESS);
 }

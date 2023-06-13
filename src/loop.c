@@ -94,13 +94,14 @@ void loop(bool detail, pid_t pid, unsigned *status)
 {
     regs_t regs;
     rusage_t rusage;
+    uint16_t rip;
     link_t *stack = NULL;
 
     while (true) {
         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL);
         wait4(pid, status, 0, &rusage);
         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-        uint16_t rip = 0xffff & ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
+        rip = 0xffff & ptrace(PTRACE_PEEKDATA, pid, regs.rip, NULL);
 
         handle_signal(pid);
         handle_opcode(regs, rip, pid, &stack);

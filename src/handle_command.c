@@ -91,7 +91,7 @@ static inline void set_process(data_t data)
  */
 unsigned handle_command(unsigned ac, char **av)
 {
-    for (unsigned i = 0; ac >= 2 && command[i].key != NULL; ++i) {
+    for (unsigned i = 0; ac >= 2 && command[i].key; ++i) {
         if (strcmp(command[i].key, av[1]) != 0)
             continue;
         auto data = (data_t) { 0, av[2], &av[2], true };
@@ -101,13 +101,13 @@ unsigned handle_command(unsigned ac, char **av)
         } else
             data.program = av[2];
         command[i].func(data);
-        return 0;
+        return EXIT_SUCCESS;
     }
     if (ac >= 2) {
         auto data = (data_t) { 0, av[1], &av[1], false };
         exec_detail(data);
-        return 0;
-    } else
-        print_usage((data_t) { 0, NULL });
-    return 1;
+        return EXIT_SUCCESS;
+    }
+    print_usage((data_t) { 0, NULL });
+    return EXIT_FAILURE;
 }

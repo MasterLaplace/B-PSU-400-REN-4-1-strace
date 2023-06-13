@@ -71,17 +71,13 @@ void print_pointer(regs_t regs, pid_t child, unsigned j)
 void print_struct(regs_t registers, pid_t child, unsigned register_index)
 {
     auto st_ptr = get_register(registers, register_index);
-    unsigned offset = 0;
+    unsigned offset = offsetof(struct stat, st_mode);
+    long c;
 
-    offset = offsetof(struct stat, st_mode);
-    auto c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);
-    if (c == -1)
+    if ((c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL)) == -1)
         return;
     printf("{st_mode=%s|%#lo", get_mode_type(c), c & 07777);
-
     offset = offsetof(struct stat, st_size);
     c = ptrace(PTRACE_PEEKDATA, child, st_ptr + offset, NULL);
-    if (c == -1)
-        return;
-    printf(", st_size=%ld, ...}", c);
+    printf(", st_size=%ld, ...}", (c == -1) ? 0 : c);
 }

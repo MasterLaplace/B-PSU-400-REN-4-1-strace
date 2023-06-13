@@ -5,11 +5,11 @@
 ** char_in_list
 */
 
-unsigned char_in_list(char c, char *list)
+int char_in_list(char c, char *list)
 {
     if (!list)
         return (-1);
-    for (unsigned i = 0; list[i]; ++i) {
+    for (int i = 0; list[i]; ++i) {
         if (c == list[i])
             return i;
     }

@@ -7,7 +7,7 @@
 
 #include <criterion/criterion.h>
 
-unsigned char_in_list(char c, char *list);
+int char_in_list(char c, char *list);
 
 Test(char_in_list_01, should_return_true)
 {

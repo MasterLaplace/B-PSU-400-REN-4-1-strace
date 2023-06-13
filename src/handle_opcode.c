@@ -84,7 +84,7 @@ static inline char *get_maps(pid_t pid)
     char str[BUFFER_SIZE] = {0};
     FILE *fp = popen(command, "r");
     if (!fread(str, sizeof(char), BUFFER_SIZE, fp))
-        return NULL;
+        return (NULL);
     fclose(fp);
     return strdup(str);
 }

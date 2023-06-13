@@ -70,7 +70,7 @@ void merge_sort_list(link_t **list, bool (*cmp)(void *, void *))
     link_t *actual = (*list);
     link_t *prev = NULL;
 
-    while ((*list) && actual != NULL) {
+    while ((*list) && actual) {
         prev = actual;
         if (actual->next == NULL) {
             actual->next = (*list);

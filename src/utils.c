@@ -33,7 +33,7 @@ typeof(8ULL) get_register(regs_t regs, unsigned j) {
         case 7:
             return regs.rax;
         default:
-            return 0;
+            return (0);
     }
 }
 
@@ -81,7 +81,7 @@ char *get_mode_type(dev_t mode)
  */
 uint64_t calculate_offset(pid_t pid, uint64_t rip)
 {
-    struct user_regs_struct regs;
+    struct user_regs_struct regs = {0};
     uint16_t *rip_ptr = (uint16_t *)&rip;
 
     ptrace(PTRACE_PEEKTEXT, pid, rip, NULL);

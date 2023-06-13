@@ -38,12 +38,12 @@ static void stock_value(link_t **link, char *line, uint64_t rip)
 
     for (; tmp[len_tmp]; len_tmp++);
     if (char_in_list('-', tmp[0]) != -1) {
-    sscanf(tmp[0], "%lx-%lx", &maillont->start, &maillont->end);
-    if (rip >= maillont->start && rip <= maillont->end) {
-            init_maillont(maillont, tmp, len_tmp, rip);
-        list_append(link, create_link(maillont));
-    } else
-        free(maillont);
+        sscanf(tmp[0], "%lx-%lx", &maillont->start, &maillont->end);
+        if (rip >= maillont->start && rip <= maillont->end) {
+                init_maillont(maillont, tmp, len_tmp, rip);
+            list_append(link, create_link(maillont));
+        } else
+            free(maillont);
     } else
         free(maillont);
     two_free(tmp);
@@ -82,7 +82,7 @@ void free_map(void *obj)
     free(map->inode);
     free(map->pathname);
     if (map->function_name)
-    free(map->function_name);
+        free(map->function_name);
     free(map);
 }
 
@@ -93,9 +93,6 @@ void free_map(void *obj)
  */
 void delete_all_map(link_t *map_list)
 {
-    if (!map_list)
-        return;
-    while (map_list) {
+    while (map_list)
         list_remove(&(map_list), map_list, &free_map);
-    }
 }
