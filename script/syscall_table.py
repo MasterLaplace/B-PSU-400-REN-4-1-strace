@@ -5,16 +5,16 @@
 
 import sys
 import os
+
 try:
     from googlesearch import search
-except ImportError:
-    print("Please install googlesearch-python")
-
-import requests
-try:
     import pycurl
+    import requests
 except ImportError:
-    print("Please install pycurl")
+    print("Please install googlesearch-python pycurl")
+    print("Possible dependencies: apt-get install libcurl4-openssl-dev libssl-dev install auditd")
+    sys.exit(1)
+
 from io import BytesIO
 from datetime import datetime
 import re
@@ -35,7 +35,7 @@ Start_of_file = """/*
     #include <stddef.h>
 
 typedef struct PACKED {
-    unsigned num;
+    int num;
     const char *name;
     unsigned nargs;
     unsigned rettype;
